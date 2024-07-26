@@ -1,2 +1,8 @@
-[profile.ci.fuzz]
-runs = 10_000
+[rpc_endpoints]
+mainnet = "${ETH_RPC_URL}"
+optimism = "${OP_PRC_URL}"
+arbitrum = "${ARBI_RPC_URL}"
+polygon = "${MATIC_RPC_URL}"
+
+[etherscan]
+mainnet = { key = "${ETHERSCAN_API_KEY}" }
