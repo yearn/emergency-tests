@@ -13,22 +13,11 @@ interface ITokenizedStrategy is IERC4626, IERC20Permit {
 
     event StrategyShutdown();
 
-    event NewTokenizedStrategy(
-        address indexed strategy,
-        address indexed asset,
-        string apiVersion
-    );
+    event NewTokenizedStrategy(address indexed strategy, address indexed asset, string apiVersion);
 
-    event Reported(
-        uint256 profit,
-        uint256 loss,
-        uint256 protocolFees,
-        uint256 performanceFees
-    );
+    event Reported(uint256 profit, uint256 loss, uint256 protocolFees, uint256 performanceFees);
 
-    event UpdatePerformanceFeeRecipient(
-        address indexed newPerformanceFeeRecipient
-    );
+    event UpdatePerformanceFeeRecipient(address indexed newPerformanceFeeRecipient);
 
     event UpdateKeeper(address indexed newKeeper);
 
@@ -58,19 +47,9 @@ interface ITokenizedStrategy is IERC4626, IERC20Permit {
                     NON-STANDARD 4626 OPTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function withdraw(
-        uint256 assets,
-        address receiver,
-        address owner,
-        uint256 maxLoss
-    ) external returns (uint256);
+    function withdraw(uint256 assets, address receiver, address owner, uint256 maxLoss) external returns (uint256);
 
-    function redeem(
-        uint256 shares,
-        address receiver,
-        address owner,
-        uint256 maxLoss
-    ) external returns (uint256);
+    function redeem(uint256 shares, address receiver, address owner, uint256 maxLoss) external returns (uint256);
 
     /*//////////////////////////////////////////////////////////////
                         MODIFIER HELPERS
@@ -144,9 +123,7 @@ interface ITokenizedStrategy is IERC4626, IERC20Permit {
 
     function setPerformanceFee(uint16 _performanceFee) external;
 
-    function setPerformanceFeeRecipient(
-        address _performanceFeeRecipient
-    ) external;
+    function setPerformanceFeeRecipient(address _performanceFeeRecipient) external;
 
     function setProfitMaxUnlockTime(uint256 _profitMaxUnlockTime) external;
 
