@@ -4,6 +4,7 @@ on:
     branches:
       - master
   pull_request:
+  # TODO: change to run daily
 
 env:
   FOUNDRY_PROFILE: ci
@@ -12,7 +13,7 @@ jobs:
   run-ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
