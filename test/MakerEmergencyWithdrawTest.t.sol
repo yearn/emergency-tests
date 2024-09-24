@@ -38,8 +38,10 @@ contract MakerEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
-        // shutdown the strategy
+        // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
+        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
         strategy.emergencyWithdraw(type(uint256).max);
@@ -59,12 +61,14 @@ contract MakerEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
-        // shutdown the strategy
+        // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
-        address management = strategy.management();
-        uint256 swapAmount = assets; // try to swap all assets
+        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // shutdown the strategy
         vm.prank(admin);
         strategy.shutdownStrategy();
+        uint256 swapAmount = assets; // try to swap all assets
+        address management = strategy.management();
         vm.prank(management);
         strategy.emergencyWithdrawDirect(type(uint256).max, true, swapAmount);
 
