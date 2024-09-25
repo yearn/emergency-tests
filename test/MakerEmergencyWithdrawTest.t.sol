@@ -50,7 +50,6 @@ contract MakerEmergencyWithdrawTest is Test {
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
-        // assertLt(ERC20(strategy.aToken()).balanceOf(address(strategy)), aTokens, "atokens not burned");
     }
 
     function verifyEmergencyExitDirect(address strategyAddress) internal {
@@ -76,6 +75,5 @@ contract MakerEmergencyWithdrawTest is Test {
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
-        // assertLt(ERC20(strategy.aToken()).balanceOf(address(strategy)), aTokens, "atokens not burned");
     }
 }
