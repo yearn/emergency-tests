@@ -25,7 +25,7 @@ contract AaveEmergencyWithdrawTest is Test {
         verifyEmergencyExit(aaveDai);
     }
 
-    function test_aave_usdt_arbitrum() public {
+    function test_aave_arbitrum() public {
         uint256 mainnetFork = vm.createFork("arbitrum");
         vm.selectFork(mainnetFork);
 
@@ -71,8 +71,10 @@ contract AaveEmergencyWithdrawTest is Test {
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         // uint256 aTokens = ERC20(strategy.aToken()).balanceOf(address(strategy));
 
-        // shutdown the strategy
+        // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
+        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
         strategy.emergencyWithdraw(type(uint256).max);
