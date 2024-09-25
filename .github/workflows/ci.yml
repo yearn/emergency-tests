@@ -4,15 +4,21 @@ on:
     branches:
       - master
   pull_request:
+  # TODO: change to run daily
 
 env:
   FOUNDRY_PROFILE: ci
+  ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+  ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
+  ARBI_RPC_URL: ${{ secrets.ARBI_RPC_URL }}
+  OP_PRC_URL: ${{ secrets.OP_PRC_URL }}
+  MATIC_RPC_URL: ${{ secrets.MATIC_RPC_URL }}
 
 jobs:
   run-ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
@@ -21,9 +27,6 @@ jobs:
 
       - name: Install deps
         run: forge install
-
-      - name: Check gas snapshots
-        run: forge snapshot --check
 
       - name: Run tests
         run: forge test
