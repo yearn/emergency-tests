@@ -50,7 +50,7 @@ contract AaveEmergencyWithdrawTest is Test {
         verifyEmergencyExit(aaveUsdc);
         verifyEmergencyExit(aaveUsdce);
         verifyEmergencyExit(aaveWmatic);
-        verifyEmergencyExit(aaveDai); // TODO: fix this
+        verifyEmergencyExit(aaveDai); // TODO: fix emergency for this strategy
     }
 
     function test_spark_dai_mainnet() public {

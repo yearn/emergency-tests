@@ -70,7 +70,8 @@ contract PendleEmergencyWithdrawTest is Test {
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
+        // can be equal if the asset is not deposited to the strategy, waiting for market conditions
+        assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         // this strategy can have losses because it needs to swap PT to YT to exit pendle
         uint256 minAmountWithLoss = balanceOfAsset * (BPS - MAX_LOSS_BPS) / BPS;
         assertGe(
