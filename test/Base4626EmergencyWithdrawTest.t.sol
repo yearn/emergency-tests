@@ -48,7 +48,6 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        uint256 valueOfVault = strategy.valueOfVault();
 
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
@@ -62,7 +61,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertEq(strategy.balanceOfStake(), 0, "balanceOfStake not zero");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
-        assertGe(strategy.valueOfVault(), valueOfVault, "vaule of vault decreased");
+        assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
         // assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
     }
 }
