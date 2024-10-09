@@ -1,10 +1,7 @@
 name: CI
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-  # TODO: change to run daily
+  schedule:
+    - cron: '12 9 * * *'
 
 env:
   FOUNDRY_PROFILE: ci
