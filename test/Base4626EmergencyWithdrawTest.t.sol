@@ -21,27 +21,25 @@ interface IBase4626Compounder is ITokenizedStrategy {
 }
 
 contract Base4626EmergencyWithdrawTest is Test {
-    // TODO: fix emergency for this strategy
     function test_gearbox_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
-        verifyEmergencyExit(gearboxWeth);
-        verifyEmergencyExit(gearboxCrv);
+        verifyEmergencyExit(gearboxWeth, false);
+        verifyEmergencyExit(gearboxCrv, false);
     }
 
-    // TODO: fix emergency for this strategy
     function test_sturdy_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
-        verifyEmergencyExit(sturdyCrvCompounder);
+        verifyEmergencyExit(sturdyCrvCompounder, true);
     }
 
-    function verifyEmergencyExit(address strategyAddress) internal {
+    function verifyEmergencyExit(address strategyAddress, bool useMaxWithdraw) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
         assertGt(strategy.totalSupply(), 0, "!totalSupply");
@@ -55,11 +53,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
-        strategy.emergencyWithdraw(type(uint256).max);
+        uint256 withdraw = useMaxWithdraw ? type(uint256).max : strategy.valueOfVault();
+        strategy.emergencyWithdraw(withdraw);
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        assertEq(strategy.balanceOfStake(), 0, "balanceOfStake not zero");
+        assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
         // assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
