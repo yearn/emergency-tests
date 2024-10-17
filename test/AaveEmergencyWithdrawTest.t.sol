@@ -15,14 +15,22 @@ contract AaveEmergencyWithdrawTest is Test {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
-        address aaveUsdc = 0xbDb97eC319c41c6FA383E94eCE6Bdf383dFC7BE4;
-        address aaveUsdt = 0x95d69641ED7eCAa5e7d5539F56Dc6194b5Bcd7fA;
-        address aaveCrv = 0x27ffA71dBB25A7C52A3Da74C6eED8C94c9A43E0d;
+        address aaveUsdc = 0xf766c7293f4e0265dDfA8369F78a808dF8AC70c1;
+        address aaveUsdt = 0xe5baF8b6Be442811211e9339d9fbC1B8fb7D66dF;
+        address aaveCrv = 0xb0154f71912866Bb69fE26fFc44779D99B9CAE85;
         address aaveDai = 0xEed00e00236cD7F36F2558D8b5fD05046449599D;
+        address aaveUsds = 0x832c30802054F60f0CeDb5BE1F9A0e3da2a0Cab4;
+        address aaveWeth = 0x90759801579208B28D2D36D13b1ED7443D1b717F;
         verifyEmergencyExit(aaveUsdc);
         verifyEmergencyExit(aaveUsdt);
         verifyEmergencyExit(aaveCrv);
         verifyEmergencyExit(aaveDai);
+        verifyEmergencyExit(aaveUsds);
+        verifyEmergencyExit(aaveWeth);
+
+        // Lido market
+        address aaveLidoWeth = 0xC7baE383738274ea8C3292d53AfBB3b42B348DF0;
+        verifyEmergencyExit(aaveLidoWeth);
     }
 
     function test_aave_arbitrum() public {
@@ -31,8 +39,10 @@ contract AaveEmergencyWithdrawTest is Test {
 
         address aaveUsdt = 0x4aE5CE819e7D678b07E8D0f483d351E2c8e8B8D3;
         address aaveUsdc = 0xd89ee1E95f7728f6964CF321E2648cCd29a881f1;
+        address aaveUsdc3 = 0x85968BF0f1f110C707fEF10a59f80118F349c058;
         verifyEmergencyExit(aaveUsdt);
         verifyEmergencyExit(aaveUsdc);
+        verifyEmergencyExit(aaveUsdc3);
     }
 
     function test_aave_polygon() public {
