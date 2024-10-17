@@ -17,45 +17,53 @@ contract PendleEmergencyWithdrawTest is Test {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
-        address weETH = 0xe5175a2EB7C40bC5f0E9DE4152caA14eab0fFCb7;
-        weETH = IVault(weETH).default_queue(0);
-        address ena = 0x2F2BBc50DB252eeADD2c9B9197beb6e5Aef87e48;
-        ena = IVault(ena).default_queue(0);
-        address rswETH = 0xdc0B53cC326B692a4D89e5F4CadC29a6B7265749;
-        rswETH = IVault(rswETH).default_queue(0);
-        address sUSDe = 0x57fC2D9809F777Cd5c8C433442264B6E8bE7Fce4;
-        sUSDe = IVault(sUSDe).default_queue(0);
-        verifyEmergencyExit(weETH);
-        verifyEmergencyExit(ena); // TODO: fix emergency for this strategy
-        verifyEmergencyExit(rswETH);
-        verifyEmergencyExit(sUSDe);
+        IVault weETHVault = IVault(0xe5175a2EB7C40bC5f0E9DE4152caA14eab0fFCb7);
+        verifyAllQueuedStrategies(weETHVault);
+        IVault enaVault = IVault(0x2F2BBc50DB252eeADD2c9B9197beb6e5Aef87e48);
+        verifyAllQueuedStrategies(enaVault);
+        IVault rswETHVault = IVault(0xdc0B53cC326B692a4D89e5F4CadC29a6B7265749);
+        verifyAllQueuedStrategies(rswETHVault);
+        IVault sUSDeVault = IVault(0x57fC2D9809F777Cd5c8C433442264B6E8bE7Fce4);
+        verifyAllQueuedStrategies(sUSDeVault);
+        IVault agEthVault = IVault(0xDDa02A2FA0bb0ee45Ba9179a3fd7e65E5D3B2C90);
+        verifyAllQueuedStrategies(agEthVault);
+        IVault lbtcVault = IVault(0x57a8b4061AA598d2Bb5f70C5F931a75C9F511fc8);
+        verifyAllQueuedStrategies(lbtcVault);
+        IVault rswVault = IVault(0xf1ce36c9C0dB95A052Eb4b075BC334e1f5a21Ef0);
+        verifyAllQueuedStrategies(rswVault);
+        IVault pufVault = IVault(0x66017371c032Cd5a67Fec6913A9e37d5bd1C690c);
+        verifyAllQueuedStrategies(pufVault);
     }
 
     function test_pendle_arbitrum() public {
         uint256 mainnetFork = vm.createFork("arbitrum");
         vm.selectFork(mainnetFork);
 
-        address weETH = 0x044E75fCbF7BD3f8f4577FF317554e9c0037F145;
-        weETH = IVault(weETH).default_queue(1);
-        verifyEmergencyExit(weETH);
-        address usde = 0x34a2b066AF16409648eF15d239E656edB8790ca0;
-        usde = IVault(usde).default_queue(0);
-        verifyEmergencyExit(usde);
-        address ezETH = 0x0F2ae7531A83982F15ff1D26B165E2bF3D7566da;
-        ezETH = IVault(ezETH).default_queue(0);
-        verifyEmergencyExit(ezETH);
-        address rsETH = 0x1Dd930ADD968ff5913C3627dAA1e6e6FCC9dc544;
-        rsETH = IVault(rsETH).default_queue(1);
-        verifyEmergencyExit(rsETH);
-        address rETH = 0xC40DA6a01Ac36F39736731ee50fb3b1B8204e2D3;
-        rETH = IVault(rETH).default_queue(0);
-        verifyEmergencyExit(rETH);
+        IVault weEthVault = IVault(0x044E75fCbF7BD3f8f4577FF317554e9c0037F145);
+        verifyAllQueuedStrategies(weEthVault);
+        IVault usdeVault = IVault(0x34a2b066AF16409648eF15d239E656edB8790ca0);
+        verifyAllQueuedStrategies(usdeVault);
+        IVault ezETHVault = IVault(0x0F2ae7531A83982F15ff1D26B165E2bF3D7566da);
+        verifyAllQueuedStrategies(ezETHVault);
+        IVault rsETH = IVault(0x1Dd930ADD968ff5913C3627dAA1e6e6FCC9dc544);
+        verifyAllQueuedStrategies(rsETH);
+        IVault rETH = IVault(0xC40DA6a01Ac36F39736731ee50fb3b1B8204e2D3);
+        verifyAllQueuedStrategies(rETH);
+    }
+
+    function verifyAllQueuedStrategies(IVault vault) internal {
+        address[] memory queues = vault.get_default_queue();
+        for (uint256 i = 0; i < queues.length; i++) {
+            verifyEmergencyExit(queues[i]);
+        }
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
         ITokenizedStrategy strategy = ITokenizedStrategy(strategyAddress);
-        // verify that the strategy has assets
-        assertGt(strategy.totalSupply(), 0, "!totalSupply");
+        if (strategy.totalSupply() == 0) {
+            // we are using vaults with 2 strategies, one of them is not active
+            return;
+        }
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
