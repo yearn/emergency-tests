@@ -56,7 +56,8 @@ contract CompoundEmergencyWithdrawTest is Test {
         // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
-        strategy.emergencyWithdraw(type(uint256).max);
+        uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
+        strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergency withdraw lost money");

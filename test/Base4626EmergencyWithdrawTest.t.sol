@@ -27,8 +27,8 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
-        verifyEmergencyExit(gearboxWeth, false);
-        verifyEmergencyExit(gearboxCrv, false);
+        verifyEmergencyExit(gearboxWeth);
+        verifyEmergencyExit(gearboxCrv);
     }
 
     function test_sturdy_mainnet() public {
@@ -36,10 +36,10 @@ contract Base4626EmergencyWithdrawTest is Test {
         vm.selectFork(mainnetFork);
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
-        verifyEmergencyExit(sturdyCrvCompounder, true);
+        verifyEmergencyExit(sturdyCrvCompounder);
     }
 
-    function verifyEmergencyExit(address strategyAddress, bool useMaxWithdraw) internal {
+    function verifyEmergencyExit(address strategyAddress) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
         assertGt(strategy.totalSupply(), 0, "!totalSupply");
@@ -53,8 +53,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
-        uint256 withdraw = useMaxWithdraw ? type(uint256).max : strategy.valueOfVault();
-        strategy.emergencyWithdraw(withdraw);
+        uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
+        strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
