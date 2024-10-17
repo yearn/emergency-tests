@@ -11,8 +11,7 @@ interface IMakerStrategy is ITokenizedStrategy {
 }
 
 contract MakerEmergencyWithdrawTest is Test {
-    address private constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
-    address private constant SDAI = 0x83F20F44975D03b1b09e64809B757c47f942BEeA;
+    address private constant USDS = 0xdC035D45d973E3EC169d2276DDab16f1e407384F;
 
     function test_susdc_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
@@ -28,6 +27,26 @@ contract MakerEmergencyWithdrawTest is Test {
 
         address susdc = 0x459F99D7c83Bc3653b1913B62D2978b1deDa01B5;
         verifyEmergencyExitDirect(susdc);
+    }
+
+    function test_sky_rewards() public {
+        uint256 mainnetFork = vm.createFork("mainnet");
+        vm.selectFork(mainnetFork);
+
+        address skyRewardsCompounder = 0x4cE9c93513DfF543Bc392870d57dF8C04e89Ba0a;
+        verifyEmergencyExit(skyRewardsCompounder);
+        address skyLender = 0x91F008870eEF686b61a3775944D55a3FC53B7024;
+        verifyEmergencyExit(skyLender);
+    }
+
+    function test_sky_farmer() public {
+        uint256 mainnetFork = vm.createFork("mainnet");
+        vm.selectFork(mainnetFork);
+
+        address usdsFarmerDai = 0x6acEDA98725505737c0F00a3dA0d047304052948;
+        verifyEmergencyExit(usdsFarmerDai);
+        address usdsFarmerUsdc = 0x602DA189F5aDa033E9aC7096Fc39C7F44a77e942;
+        verifyEmergencyExit(usdsFarmerUsdc);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -50,6 +69,11 @@ contract MakerEmergencyWithdrawTest is Test {
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
         assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
+
+        // if the strategy asset is not USDS, then all USDS should be withdrawn
+        if (strategy.asset() != USDS) {
+            assertEq(ERC20(USDS).balanceOf(address(strategy)), 0, "usds not zero");
+        }
     }
 
     function verifyEmergencyExitDirect(address strategyAddress) internal {
