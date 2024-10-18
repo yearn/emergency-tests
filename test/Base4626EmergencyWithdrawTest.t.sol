@@ -36,7 +36,9 @@ contract Base4626EmergencyWithdrawTest is Test {
         vm.selectFork(mainnetFork);
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
+        address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
         verifyEmergencyExit(sturdyCrvCompounder);
+        verifyEmergencyExit(sturdyWeth);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
