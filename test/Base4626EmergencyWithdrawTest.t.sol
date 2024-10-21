@@ -5,6 +5,8 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {IERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
 
 interface IBase4626Compounder is ITokenizedStrategy {
     function vault() external view returns (address);
@@ -18,6 +20,8 @@ interface IBase4626Compounder is ITokenizedStrategy {
     function valueOfVault() external view returns (uint256);
 
     function vaultsMaxWithdraw() external view returns (uint256);
+
+    function staking() external view returns (address);
 }
 
 contract Base4626EmergencyWithdrawTest is Test {
@@ -27,8 +31,8 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
-        verifyEmergencyExit(gearboxWeth);
-        verifyEmergencyExit(gearboxCrv);
+        verifyGearboxEmergencyExit(gearboxWeth);
+        verifyGearboxEmergencyExit(gearboxCrv);
     }
 
     function test_sturdy_mainnet() public {
@@ -39,6 +43,33 @@ contract Base4626EmergencyWithdrawTest is Test {
         address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
         verifyEmergencyExit(sturdyCrvCompounder);
         verifyEmergencyExit(sturdyWeth);
+    }
+
+        function verifyGearboxEmergencyExit(address strategyAddress) internal {
+        IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
+        // verify that the strategy has assets
+        assertGt(strategy.totalSupply(), 0, "!totalSupply");
+        uint256 assets = strategy.totalAssets();
+        assertGt(assets, 0, "!totalAssets");
+        uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
+
+        // verify that the strategy has set an emergency admin
+        address admin = strategy.emergencyAdmin();
+        // assertNotEq(admin, address(0), "emergencyAdmin not set"); // TODO: enable when emergencyAdmin is set
+        // shutdown the strategy
+        vm.startPrank(admin);
+        strategy.shutdownStrategy();
+        // IMPORTANT: need to override this: https://github.com/yearn/yearn-strategies/issues/642#issuecomment-2402732907
+        IERC4626 vault = IERC4626(strategy.vault());
+        uint256 maxWithdrawAmount = vault.convertToAssets(Math.min(vault.maxRedeem(strategy.staking()), strategy.balanceOfStake()));
+        maxWithdrawAmount += strategy.balanceOfAsset();
+        strategy.emergencyWithdraw(maxWithdrawAmount);
+
+        // verify that the strategy has recovered all assets
+        assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
+        assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
+        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
+        assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {

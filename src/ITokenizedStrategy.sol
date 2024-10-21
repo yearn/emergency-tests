@@ -131,7 +131,5 @@ interface ITokenizedStrategy is IERC4626, IERC20Permit {
 
     function emergencyWithdraw(uint256 _amount) external;
 
-    function availableWithdrawLimit(
-        address _owner
-    ) external view returns (uint256);
+    function availableWithdrawLimit(address _owner) external view returns (uint256);
 }
