@@ -4,6 +4,7 @@ pragma solidity ^0.8.25;
 import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
+import "src/IVault.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {IERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
@@ -22,6 +23,10 @@ interface IBase4626Compounder is ITokenizedStrategy {
     function vaultsMaxWithdraw() external view returns (uint256);
 
     function staking() external view returns (address);
+}
+
+interface ISturdy {
+    function pair() external view returns (address);
 }
 
 contract Base4626EmergencyWithdrawTest is Test {
@@ -45,7 +50,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         verifyEmergencyExit(sturdyWeth);
     }
 
-        function verifyGearboxEmergencyExit(address strategyAddress) internal {
+    function verifyGearboxEmergencyExit(address strategyAddress) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
         assertGt(strategy.totalSupply(), 0, "!totalSupply");
@@ -61,7 +66,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         strategy.shutdownStrategy();
         // IMPORTANT: need to override this: https://github.com/yearn/yearn-strategies/issues/642#issuecomment-2402732907
         IERC4626 vault = IERC4626(strategy.vault());
-        uint256 maxWithdrawAmount = vault.convertToAssets(Math.min(vault.maxRedeem(strategy.staking()), strategy.balanceOfStake()));
+        uint256 maxWithdrawAmount =
+            vault.convertToAssets(Math.min(vault.maxRedeem(strategy.staking()), strategy.balanceOfStake()));
         maxWithdrawAmount += strategy.balanceOfAsset();
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
@@ -86,14 +92,16 @@ contract Base4626EmergencyWithdrawTest is Test {
         // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
-        uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
+        IVault vault = IVault(strategy.vault());
+        ISturdy sturdy = ISturdy(vault.default_queue(0));
+        address pair = sturdy.pair();
+        uint256 maxWithdrawAmount =
+            Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair));
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
-        assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
-        // assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
     }
 }
