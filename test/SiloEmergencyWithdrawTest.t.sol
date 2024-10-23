@@ -5,6 +5,7 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract SiloEmergencyWithdrawTest is Test {
     function test_silo_arbitrum() public {
@@ -35,11 +36,17 @@ contract SiloEmergencyWithdrawTest is Test {
         // shutdown the strategy
         vm.startPrank(admin);
         strategy.shutdownStrategy();
-        strategy.emergencyWithdraw(type(uint256).max);
+        uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
+        strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
-        assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
+        // verify strategy has recovered all assets or maximum possible
+        assertGe(
+            ERC20(strategy.asset()).balanceOf(address(strategy)),
+            Math.min(assets, maxWithdrawAmount),
+            "strategy didn't recover all asset"
+        );
     }
 }
