@@ -57,6 +57,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
+        uint256 vaultValue = strategy.valueOfVault();
 
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
@@ -73,9 +74,9 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
-        assertLt(strategy.valueOfVault(), 10, "vaule still in vault"); // allow some dust
+        // valut value is both staked and asset value: https://github.com/yearn/tokenized-strategy-periphery/blob/f139be6286cb3d630b0bce6d6db812c709e5bb47/src/Bases/4626Compounder/Base4626Compounder.sol#L165
+        assertLt(strategy.valueOfVault(), vaultValue, "all value stayed in the vault");
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -85,6 +86,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
+        uint256 vaultValue = strategy.valueOfVault();
 
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
@@ -101,7 +103,7 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         // verify that the strategy has recovered all assets
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        assertLt(strategy.balanceOfStake(), 10, "balanceOfStake not zero");
+        assertLt(strategy.valueOfVault(), vaultValue, "all value stayed in the vault");
         assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
     }
 }
