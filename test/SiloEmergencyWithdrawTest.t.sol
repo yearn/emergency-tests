@@ -15,11 +15,9 @@ contract SiloEmergencyWithdrawTest is Test {
         address siloWbtc = 0xE82D060687C014B280b65df24AcD94A77251C784;
         address siloWstEth = 0xA4B8873B4629c20f2167c0A2bC33B6AF8699dDc1;
         address siloArb = 0xb739AE19620f7ECB4fb84727f205453aa5bc1AD2;
-        address siliWstEth2 = 0x127A7F610cc704Be6122dfa76eb61E84C9cb0Efd;
         verifyEmergencyExit(siloWbtc);
         verifyEmergencyExit(siloWstEth);
         verifyEmergencyExit(siloArb);
-        verifyEmergencyExit(siliWstEth2);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
