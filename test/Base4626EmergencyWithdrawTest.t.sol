@@ -36,8 +36,10 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
+        address gearboxUsdc = 0xf6E2d36c489e5B361CdC962D4568ceA663AD5ddC;
         verifyGearboxEmergencyExit(gearboxWeth);
         verifyGearboxEmergencyExit(gearboxCrv);
+        verifyGearboxEmergencyExit(gearboxUsdc);
     }
 
     function test_sturdy_mainnet() public {
@@ -46,8 +48,10 @@ contract Base4626EmergencyWithdrawTest is Test {
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
         address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
+        address sturdyPxEth = 0xC40dC53931cd184F782f3602d95C7e3609706004;
         verifyEmergencyExit(sturdyCrvCompounder);
         verifyEmergencyExit(sturdyWeth);
+        verifyEmergencyExit(sturdyPxEth);
     }
 
     function verifyGearboxEmergencyExit(address strategyAddress) internal {
