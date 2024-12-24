@@ -37,11 +37,6 @@ contract MakerEmergencyWithdrawTest is Test {
         verifyEmergencyExit(skyRewardsCompounder);
         address skyLender = 0x91F008870eEF686b61a3775944D55a3FC53B7024;
         verifyEmergencyExit(skyLender);
-    }
-
-    function test_sky_farmer() public {
-        uint256 mainnetFork = vm.createFork("mainnet");
-        vm.selectFork(mainnetFork);
 
         address usdsFarmerDai = 0x6acEDA98725505737c0F00a3dA0d047304052948;
         verifyEmergencyExit(usdsFarmerDai);

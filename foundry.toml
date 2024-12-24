@@ -6,6 +6,7 @@ mainnet = "${ETH_RPC_URL}"
 optimism = "${OP_PRC_URL}"
 arbitrum = "${ARBI_RPC_URL}"
 polygon = "${MATIC_RPC_URL}"
+base = "${BASE_RPC_URL}"
 
 [etherscan]
 mainnet = { key = "${ETHERSCAN_API_KEY}" }
