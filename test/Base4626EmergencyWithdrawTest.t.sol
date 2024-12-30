@@ -139,7 +139,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         ISturdy sturdy = ISturdy(vault.default_queue(0));
         address pair = sturdy.pair();
         uint256 maxWithdrawAmount =
-            Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair));
+            Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair) - 1);
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
