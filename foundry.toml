@@ -1,5 +1,5 @@
 [profile.default]
-evm_version = 'shanghai'
+evm_version = 'cancun'
 
 [rpc_endpoints]
 mainnet = "${ETH_RPC_URL}"
