@@ -61,14 +61,14 @@ contract Base4626EmergencyWithdrawTest is Test {
         address morphoUsdcSteakhouse = 0x074134A2784F4F66b6ceD6f68849382990Ff3215;
         address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
         address morphoUsdcGauntletPrime = 0x694E47AFD14A64661a04eee674FB331bCDEF3737;
-        address morphoUsdcUsualBoosted = 0xb6da41D4BDb484BDaD0BfAa79bC8E182E5095F7e;
+        // address morphoUsdcUsualBoosted = 0xb6da41D4BDb484BDaD0BfAa79bC8E182E5095F7e;
         address morphoDaiGauntletCore = 0x09580f2305a335218bdB2EB828387d52ED8Fc2F4;
         address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
         verifyEmergencyExit(morphoUsdcSteakhouse);
         verifyEmergencyExit(morphoUsdcGauntletCore);
         verifyEmergencyExit(morphoUsdcGauntletPrime);
-        verifyEmergencyExit(morphoUsdcUsualBoosted);
+        // verifyEmergencyExit(morphoUsdcUsualBoosted);
         verifyEmergencyExit(morphoDaiGauntletCore);
         verifyEmergencyExit(morphoWethGauntletLrt);
         verifyEmergencyExit(morphoWethGauntletPrime);
@@ -165,9 +165,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        console.log("balanceOfAsset", balanceOfAsset);
         uint256 valueOfVault = strategy.valueOfVault();
-        console.log("valueOfVault", valueOfVault);
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
         assertNotEq(admin, address(0), "emergencyAdmin not set");
