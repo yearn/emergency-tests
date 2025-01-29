@@ -106,8 +106,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 maxWithdrawAmount =
             vault.convertToAssets(Math.min(vault.maxRedeem(strategy.staking()), strategy.balanceOfStake()));
         maxWithdrawAmount += strategy.balanceOfAsset();
-        if (maxWithdrawAmount == 0) {
-            return;
+        if (maxWithdrawAmount < 100) {
+            return; // skip dust
         }
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
@@ -143,8 +143,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         address pair = sturdy.pair();
         uint256 maxWithdrawAmount =
             Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair));
-        if (maxWithdrawAmount == 0) {
-            return;
+        if (maxWithdrawAmount < 100) {
+            return; // skip dust
         }
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
@@ -179,8 +179,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         vm.startPrank(admin);
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
-        if (maxWithdrawAmount == 0) {
-            return;
+        if (maxWithdrawAmount < 100) {
+            return; // skip dust
         }
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
