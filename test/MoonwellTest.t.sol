@@ -9,7 +9,7 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract MoonwellTest is Test {
     function test_moonwell_lender_borrower_base() public {
-        uint256 baseFork = vm.createFork("base", 26505939);
+        uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
 
         address moonwellUsdcToWeth = 0xfdB431E661372fA1146efB70bf120ECDed944a78;
@@ -23,7 +23,7 @@ contract MoonwellTest is Test {
     }
 
     function test_moonwell_farmer_base() public {
-        uint256 baseFork = vm.createFork("base", 26505939);
+        uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
 
         address levMoonwellWeth = 0x7c0Fa3905B38D44C0F29150FD61f182d1e097EC2;
