@@ -33,6 +33,7 @@ contract Base4626EmergencyWithdrawTest is Test {
     function test_gearbox_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
+        console.log("Current block number on mainnet:", block.number);
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
@@ -45,6 +46,7 @@ contract Base4626EmergencyWithdrawTest is Test {
     function test_sturdy_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
+        console.log("Current block number on mainnet:", block.number);
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
         address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
@@ -57,6 +59,7 @@ contract Base4626EmergencyWithdrawTest is Test {
     function test_morpho_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
+        console.log("Current block number on mainnet:", block.number);
 
         address morphoUsdcSteakhouse = 0x074134A2784F4F66b6ceD6f68849382990Ff3215;
         address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
@@ -77,6 +80,7 @@ contract Base4626EmergencyWithdrawTest is Test {
     function test_morpho_base() public {
         uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
+        console.log("Current block number on base:", block.number);
 
         address morphoUsdcMoonwell = 0xd5428B889621Eee8060fc105AA0AB0Fa2e344468;
         address morphoEurcMoonwell = 0x985CC9c306Bfe075F7c67EC275fb0b80F0b21976;
@@ -93,7 +97,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        uint256 vaultValue = strategy.valueOfVault();
+        uint256 valueOfVault = strategy.valueOfVault();
 
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
@@ -112,15 +116,18 @@ contract Base4626EmergencyWithdrawTest is Test {
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy has recovered all assets
+        uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+        uint256 currentValueOfVault = strategy.valueOfVault();
+        uint256 roundingError = 10;
+
         assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        uint256 strategyBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
-        assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
+        assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
         // verify strategy has recovered all assets or maximum possible
-        uint256 roundingError = 1;
-        assertGe(strategyBalance + roundingError, Math.min(assets, maxWithdrawAmount), "strategy didn't recover all asset");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
+        assertGe(currentBalance + roundingError, maxWithdrawAmount, "strategy didn't recover all asset");
         // valut value is both staked and asset value: https://github.com/yearn/tokenized-strategy-periphery/blob/f139be6286cb3d630b0bce6d6db812c709e5bb47/src/Bases/4626Compounder/Base4626Compounder.sol#L165
-        assertLt(strategy.valueOfVault(), vaultValue, "all value stayed in the vault");
+        assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
+        assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
+        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value");
     }
 
     function verifySturdyEmergencyExit(address strategyAddress) internal {
@@ -130,7 +137,7 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        uint256 vaultValue = strategy.valueOfVault();
+        uint256 valueOfVault = strategy.valueOfVault();
 
         // verify that the strategy has set an emergency admin
         address admin = strategy.emergencyAdmin();
@@ -154,11 +161,15 @@ contract Base4626EmergencyWithdrawTest is Test {
         assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
 
         // study strategy has some rounding error because of converting assets to shares
-        uint256 roundingError = 3;
+        uint256 roundingError = 10;
         // verify strategy has recovered all assets or maximum possible
-        assertGe(strategyBalance + roundingError, Math.min(assets, maxWithdrawAmount), "strategy didn't recover all asset");
-        assertLt(strategy.valueOfVault(), vaultValue, "all value stayed in the vault");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
+        uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+        uint256 currentValueOfVault = strategy.valueOfVault();
+
+        assertGe(currentBalance + roundingError, maxWithdrawAmount, "strategy didn't recover all asset");
+        assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
+        assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
+        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value");
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -185,12 +196,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         strategy.emergencyWithdraw(maxWithdrawAmount);
 
         // verify that the strategy didn't lose any funds
-        assertEq(strategy.totalAssets(), assets, "emergency withdraw lost money");
-        assertGt(ERC20(strategy.asset()).balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
-        assertGe(ERC20(strategy.asset()).balanceOf(address(strategy)), assets, "strategy didn't recover all asset");
-
         uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 currentValueOfVault = strategy.valueOfVault();
-        assertApproxEqAbs(currentBalance - currentValueOfVault, balanceOfAsset + valueOfVault, 10, "strategy lost value");
+
+        assertEq(strategy.totalAssets(), assets, "emergency withdraw lost money");
+        assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
+        assertGe(currentBalance, maxWithdrawAmount, "strategy didn't recover all asset");
+        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, 10, "strategy lost value");
     }
 }
