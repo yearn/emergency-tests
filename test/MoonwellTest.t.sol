@@ -18,7 +18,7 @@ contract MoonwellTest is Test {
         address moonwellcbEthToWeth = 0xd89A4f020C8d256a2A4B0dC40B36Ee0b27680776;
         verifyEmergencyExitLenderBorrower(moonwellUsdcToWeth);
         verifyEmergencyExitLenderBorrower(moonwellcbBtcToWeth);
-        // verifyEmergencyExitLenderBorrower(moonwellWethTocbBtc);
+        verifyEmergencyExitLenderBorrower(moonwellWethTocbBtc);
         verifyEmergencyExitLenderBorrower(moonwellcbEthToWeth);
     }
 
@@ -31,10 +31,9 @@ contract MoonwellTest is Test {
         address levMoonwellcbEth = 0xDd120ded7c1c9E4978f92847bcb24847A9dBb071;
         address levMoonwellcbBtc = 0xBb808A822dD7aEd1635956b85ca5e55478cCa957;
         verifyEmergencyExitFarmer(levMoonwellWeth);
-        // no funds in these strategies
-        // verifyEmergencyExitFarmer(levMoonwellWstEth);
-        // verifyEmergencyExitFarmer(levMoonwellcbEth);
-        // verifyEmergencyExitFarmer(levMoonwellcbBtc);
+        verifyEmergencyExitFarmer(levMoonwellWstEth);
+        verifyEmergencyExitFarmer(levMoonwellcbEth);
+        verifyEmergencyExitFarmer(levMoonwellcbBtc);
     }
 
     function verifyEmergencyExitLenderBorrower(address strategyAddress) internal {
