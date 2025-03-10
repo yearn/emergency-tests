@@ -90,6 +90,15 @@ contract Base4626EmergencyWithdrawTest is Test {
         verifyEmergencyExit(morphoWethMoonwell);
     }
 
+    function test_euler_mainnet() public {
+        uint256 mainnetFork = vm.createFork("mainnet");
+        vm.selectFork(mainnetFork);
+        console.log("Current block number on mainnet:", block.number);
+
+        address eulerPrimeWeth = 0xaf48f006e75AF050c4136F5a32B69e3FE1C4140f;
+        verifyEmergencyExit(eulerPrimeWeth);
+    }
+
     function verifyGearboxEmergencyExit(address strategyAddress) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
