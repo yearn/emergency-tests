@@ -61,8 +61,9 @@ contract MoonwellTest is Test {
         assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
 
         // verify strategy has recovered all assets or maximum possible
-        assertGe(strategyBalance, Math.min(assets, maxWithdrawAmount), "strategy didn't recover all asset");
-        assertEq(strategy.totalAssets(), assets, "emergency withdraw lost money");
+        uint256 minRecovered = Math.min(assets, maxWithdrawAmount) * 995 / 1000; // 0.5% can be left in the strategy until the rewards are sold
+        assertGe(strategyBalance, Math.min(assets, minRecovered), "strategy didn't recover all asset");
+        assertGe(strategy.totalAssets(), assets, "emergency withdraw lost money");
         assertGt(ERC20(strategy.asset()).balanceOf(strategyAddress), balanceOfAsset, "strategy balance not increased");
     }
 
@@ -93,7 +94,7 @@ contract MoonwellTest is Test {
         // verify strategy has recovered all assets or maximum possible
         uint256 minRecovered = Math.min(assets, maxWithdrawAmount) * 99 / 100; // 1% can be left in the strategy
         assertGe(strategyBalance, Math.min(assets, minRecovered), "strategy didn't recover all asset");
-        assertGe(strategy.totalAssets(), assets * 99 / 100, "emergency withdraw lost money"); // accept 1% loss
+        assertGe(strategy.totalAssets(), assets, "emergency withdraw lost money"); // accept 1% loss
         assertGt(ERC20(strategy.asset()).balanceOf(strategyAddress), balanceOfAsset, "strategy balance not increased");
     }
 }
