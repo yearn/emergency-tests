@@ -90,6 +90,19 @@ contract Base4626EmergencyWithdrawTest is Test {
         verifyEmergencyExit(morphoWethMoonwell);
     }
 
+    function test_compound_blue_polygon() public {
+        uint256 polygonFork = vm.createFork("polygon");
+        vm.selectFork(polygonFork);
+        console.log("Current block number on polygon:", block.number);
+
+        address compoundBlueWeth = 0xD4a0AA006e0f70580Aaa7ee1FD04Fa447c36B259;
+        address compoundBlueUsdc = 0x6E9ac188DbCC14632a253aA9Ce2783cD712aB3cA;
+        address compoundBlueUsdt = 0x9d1046ceCB0662037b13dECF1CD125C4Aa3fb65B;
+        verifyEmergencyExit(compoundBlueWeth);
+        verifyEmergencyExit(compoundBlueUsdc);
+        verifyEmergencyExit(compoundBlueUsdt);
+    }
+
     function test_euler_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
