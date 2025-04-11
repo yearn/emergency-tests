@@ -54,21 +54,14 @@ contract AaveEmergencyWithdrawTest is Test {
         address aaveUsdc = 0x52367C8E381EDFb068E9fBa1e7E9B2C847042897;
         address aaveUsdce = 0xdB92B89Ca415c0dab40Dc96E99Fc411C08F20780;
         address aaveWmatic = 0x12c3Ad898e8eB1C0ec0Bb74f9748F36C46593F68;
+        address aaveDai = 0xf4F9d5697341B4C9B0Cc8151413e05A90f7dc24F;
         verifyEmergencyExit(aaveWeth);
         verifyEmergencyExit(aaveUsdt);
         verifyEmergencyExit(aaveUsdc);
         verifyEmergencyExit(aaveUsdce);
         verifyEmergencyExit(aaveWmatic);
+        verifyEmergencyExit(aaveDai);
     }
-
-    // TODO: fix emergency for this strategy
-    // function test_aave_dai_polygon() public {
-    //     uint256 mainnetFork = vm.createFork("polygon");
-    //     vm.selectFork(mainnetFork);
-
-    //     address aaveDai = 0xf4F9d5697341B4C9B0Cc8151413e05A90f7dc24F;
-    //     verifyEmergencyExit(aaveDai);
-    // }
 
     function test_spark_dai_mainnet() public {
         // Spark is the fork of Aave
