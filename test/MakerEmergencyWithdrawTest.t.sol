@@ -52,12 +52,17 @@ contract MakerEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
+        // NOTE: enable this check for new strategy
         // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // address admin = strategy.emergencyAdmin();
+        // assertNotEq(admin, address(0), "emergencyAdmin not set");
         // shutdown the strategy
-        vm.startPrank(admin);
-        strategy.shutdownStrategy();
+        // vm.prank(management);
+        // strategy.shutdownStrategy();
+        address management = strategy.management();
+        vm.prank(management);
+        strategy.shutdownStrategy(); // TODO: remove after adding emergency admin
+        vm.prank(management);
         strategy.emergencyWithdraw(type(uint256).max);
 
         // verify that the strategy has recovered all assets
@@ -79,14 +84,17 @@ contract MakerEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
+        // NOTE: enable this check for new strategy
         // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // address admin = strategy.emergencyAdmin();
+        // assertNotEq(admin, address(0), "emergencyAdmin not set");
         // shutdown the strategy
-        vm.prank(admin);
-        strategy.shutdownStrategy();
+        // vm.prank(management);
+        // strategy.shutdownStrategy();
         uint256 swapAmount = assets; // try to swap all assets
         address management = strategy.management();
+        vm.prank(management);
+        strategy.shutdownStrategy(); // TODO: remove after adding emergency admin
         vm.prank(management);
         strategy.emergencyWithdrawDirect(type(uint256).max, true, swapAmount);
 

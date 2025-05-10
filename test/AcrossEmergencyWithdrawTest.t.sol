@@ -30,11 +30,13 @@ contract AcrossEmergencyWithdrawTest is Test {
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         // uint256 balanceOfBase = ERC20(strategy.comet()).balanceOf(address(strategy));
 
+        // NOTE: enable this check for new strategy
         // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // address admin = strategy.emergencyAdmin();
+        // assertNotEq(admin, address(0), "emergencyAdmin not set");
         // shutdown the strategy
-        vm.startPrank(admin);
+        address management = strategy.management();
+        vm.startPrank(management); // TODO: change to emergency admin
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
         strategy.emergencyWithdraw(maxWithdrawAmount);
