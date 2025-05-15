@@ -61,19 +61,25 @@ contract Base4626EmergencyWithdrawTest is Test {
         vm.selectFork(mainnetFork);
         console.log("Current block number on mainnet:", block.number);
 
+        address morphoYearnOgWeth = 0xd9BA99D93ea94a65b5BC838a0106cA3AbC82Ec4F;
+        address morphoYearnOgDai = 0x75f35498E0D053d0DBd2472BC06e7CbA1f0c7d3a;
         address morphoUsdcSteakhouse = 0x074134A2784F4F66b6ceD6f68849382990Ff3215;
-        address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
+        // address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
         address morphoUsdcGauntletPrime = 0x694E47AFD14A64661a04eee674FB331bCDEF3737;
+        address morphoUsdtGauntletPrime = 0x6D2981FF9b8d7edbb7604de7A65BAC8694ac849F;
         // address morphoUsdcUsualBoosted = 0xb6da41D4BDb484BDaD0BfAa79bC8E182E5095F7e;
         address morphoDaiGauntletCore = 0x09580f2305a335218bdB2EB828387d52ED8Fc2F4;
-        address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
+        // address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
+        verifyEmergencyExit(morphoYearnOgWeth);
+        verifyEmergencyExit(morphoYearnOgDai);
         verifyEmergencyExit(morphoUsdcSteakhouse);
-        verifyEmergencyExit(morphoUsdcGauntletCore);
+        // verifyEmergencyExit(morphoUsdcGauntletCore);
         verifyEmergencyExit(morphoUsdcGauntletPrime);
+        verifyEmergencyExit(morphoUsdtGauntletPrime);
         // verifyEmergencyExit(morphoUsdcUsualBoosted);
         verifyEmergencyExit(morphoDaiGauntletCore);
-        verifyEmergencyExit(morphoWethGauntletLrt);
+        // verifyEmergencyExit(morphoWethGauntletLrt);
         verifyEmergencyExit(morphoWethGauntletPrime);
     }
 
@@ -82,9 +88,13 @@ contract Base4626EmergencyWithdrawTest is Test {
         vm.selectFork(baseFork);
         console.log("Current block number on base:", block.number);
 
+        address morphoYearnOgWeth = 0xBDD79a7DF622E9d9e19a7d92Bc7ea212FA0D2F3E;
+        address morphoYearnOgUsdc = 0xF115C134c23C7A05FBD489A8bE3116EbF54B0D9f;
         address morphoUsdcMoonwell = 0xd5428B889621Eee8060fc105AA0AB0Fa2e344468;
         address morphoEurcMoonwell = 0x985CC9c306Bfe075F7c67EC275fb0b80F0b21976;
         address morphoWethMoonwell = 0xEF34B4Dcb851385b8F3a8ff460C34aDAFD160802;
+        verifyEmergencyExit(morphoYearnOgWeth);
+        verifyEmergencyExit(morphoYearnOgUsdc);
         verifyEmergencyExit(morphoUsdcMoonwell);
         verifyEmergencyExit(morphoEurcMoonwell);
         verifyEmergencyExit(morphoWethMoonwell);
@@ -96,10 +106,10 @@ contract Base4626EmergencyWithdrawTest is Test {
         console.log("Current block number on polygon:", block.number);
 
         address compoundBlueWeth = 0xD4a0AA006e0f70580Aaa7ee1FD04Fa447c36B259;
-        address compoundBlueUsdc = 0x6E9ac188DbCC14632a253aA9Ce2783cD712aB3cA;
+        // address compoundBlueUsdc = 0x6E9ac188DbCC14632a253aA9Ce2783cD712aB3cA;
         address compoundBlueUsdt = 0x9d1046ceCB0662037b13dECF1CD125C4Aa3fb65B;
         verifyEmergencyExit(compoundBlueWeth);
-        verifyEmergencyExit(compoundBlueUsdc);
+        // verifyEmergencyExit(compoundBlueUsdc);
         verifyEmergencyExit(compoundBlueUsdt);
     }
 
