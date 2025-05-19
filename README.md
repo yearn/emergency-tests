@@ -23,6 +23,8 @@ forge test
 - [Maker & Sky](./test/MakerEmergencyWithdrawTest.t.sol) on mainnet
 - [Pendle](./test/PendleEmergencyWithdrawTest.t.sol) on mainnet and arbitrum
 - [Silo](./test/SiloEmergencyWithdrawTest.t.sol) on arbitrum
+- [Morpho](./test/Base4626EmergencyWithdrawTest.t.sol) on mainnet and base
+- [Euler](./test/EulerEmergencyWithdrawTest.t.sol) on mainnet
 
 ### Strategies Failing
 

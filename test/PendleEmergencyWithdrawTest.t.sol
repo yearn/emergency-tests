@@ -13,35 +13,26 @@ contract PendleEmergencyWithdrawTest is Test {
     uint256 private constant MAX_LOSS_BPS = 100; // 1%
     uint256 private constant BPS = 10_000;
 
-    function test_pendle_mainnet() public {
+    function _test_pendle_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
-        IVault weETHVault = IVault(0xe5175a2EB7C40bC5f0E9DE4152caA14eab0fFCb7);
-        verifyAllQueuedStrategies(weETHVault);
-        IVault agEthVault = IVault(0xDDa02A2FA0bb0ee45Ba9179a3fd7e65E5D3B2C90);
-        verifyAllQueuedStrategies(agEthVault);
-        IVault lbtcVault = IVault(0x57a8b4061AA598d2Bb5f70C5F931a75C9F511fc8);
-        verifyAllQueuedStrategies(lbtcVault);
-        // empty vaults
-        // IVault enaVault = IVault(0x2F2BBc50DB252eeADD2c9B9197beb6e5Aef87e48);
-        // verifyAllQueuedStrategies(enaVault);
-        // IVault rswETHVault = IVault(0xdc0B53cC326B692a4D89e5F4CadC29a6B7265749);
-        // verifyAllQueuedStrategies(rswETHVault);
-        // IVault sUSDeVault = IVault(0x57fC2D9809F777Cd5c8C433442264B6E8bE7Fce4);
-        // verifyAllQueuedStrategies(sUSDeVault);
-        // IVault rswVault = IVault(0xf1ce36c9C0dB95A052Eb4b075BC334e1f5a21Ef0);
-        // verifyAllQueuedStrategies(rswVault);
-        // IVault pufVault = IVault(0x66017371c032Cd5a67Fec6913A9e37d5bd1C690c);
-        // verifyAllQueuedStrategies(pufVault);
+        // NOTE: not used by yearn anymore
+        // IVault weETHVault = IVault(0xe5175a2EB7C40bC5f0E9DE4152caA14eab0fFCb7);
+        // verifyAllQueuedStrategies(weETHVault);
+        // IVault agEthVault = IVault(0xDDa02A2FA0bb0ee45Ba9179a3fd7e65E5D3B2C90);
+        // verifyAllQueuedStrategies(agEthVault);
+        // IVault lbtcVault = IVault(0x57a8b4061AA598d2Bb5f70C5F931a75C9F511fc8);
+        // verifyAllQueuedStrategies(lbtcVault);
     }
 
-    function test_pendle_arbitrum() public {
+    function _test_pendle_arbitrum() public {
         uint256 mainnetFork = vm.createFork("arbitrum");
         vm.selectFork(mainnetFork);
 
-        IVault usdeVault = IVault(0x34a2b066AF16409648eF15d239E656edB8790ca0);
-        verifyAllQueuedStrategies(usdeVault);
+        // NOTE: not used by yearn anymore
+        // IVault usdeVault = IVault(0x34a2b066AF16409648eF15d239E656edB8790ca0);
+        // verifyAllQueuedStrategies(usdeVault);
         // empty vaults
         // IVault weEthVault = IVault(0x044E75fCbF7BD3f8f4577FF317554e9c0037F145);
         // verifyAllQueuedStrategies(weEthVault);
