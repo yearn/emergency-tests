@@ -5,7 +5,6 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import {RolesVerification} from "./RolesVerification.sol";
 
 interface IMakerStrategy is ITokenizedStrategy {
     function emergencyWithdrawDirect(uint256 _sharesSDAI, bool _usePSM, uint256 _swapAmount) external;
