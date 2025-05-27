@@ -18,9 +18,11 @@ contract CompoundEmergencyWithdrawTest is Test {
         address compUsdc = 0x7eE351aA702C8fC735D77Fb229b7676AC15D7c79;
         address compUsdt = 0x206db0A0Af10Bec57784045e089A418771D20227;
         address compWeth = 0x23eE3D14F09946A084350CC6A7153fc6eb918817;
+        address compUsds = 0x6701DEa9809dEaf068B8445798d0E19B025480Fe;
         verifyEmergencyExit(compUsdc);
         verifyEmergencyExit(compUsdt);
         verifyEmergencyExit(compWeth);
+        verifyEmergencyExit(compUsds);
     }
 
     function test_aribtrum() public {
@@ -38,7 +40,9 @@ contract CompoundEmergencyWithdrawTest is Test {
         vm.selectFork(mainnetFork);
 
         address compUsdt = 0x0fEFEe13864c431717f5B2678607b6ce532a170C;
+        address compUsdce = 0xb1403908F772E4374BB151F7C67E88761a0Eb4f1;
         verifyEmergencyExit(compUsdt);
+        verifyEmergencyExit(compUsdce);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {

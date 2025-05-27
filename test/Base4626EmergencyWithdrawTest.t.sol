@@ -64,23 +64,25 @@ contract Base4626EmergencyWithdrawTest is Test {
         address morphoYearnOgWeth = 0xd9BA99D93ea94a65b5BC838a0106cA3AbC82Ec4F;
         address morphoYearnOgDai = 0x75f35498E0D053d0DBd2472BC06e7CbA1f0c7d3a;
         address morphoUsdcSteakhouse = 0x074134A2784F4F66b6ceD6f68849382990Ff3215;
-        // address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
         address morphoUsdcGauntletPrime = 0x694E47AFD14A64661a04eee674FB331bCDEF3737;
         address morphoUsdtGauntletPrime = 0x6D2981FF9b8d7edbb7604de7A65BAC8694ac849F;
-        // address morphoUsdcUsualBoosted = 0xb6da41D4BDb484BDaD0BfAa79bC8E182E5095F7e;
         address morphoDaiGauntletCore = 0x09580f2305a335218bdB2EB828387d52ED8Fc2F4;
-        // address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
+        address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
         verifyEmergencyExit(morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgDai);
         verifyEmergencyExit(morphoUsdcSteakhouse);
-        // verifyEmergencyExit(morphoUsdcGauntletCore);
         verifyEmergencyExit(morphoUsdcGauntletPrime);
         verifyEmergencyExit(morphoUsdtGauntletPrime);
-        // verifyEmergencyExit(morphoUsdcUsualBoosted);
         verifyEmergencyExit(morphoDaiGauntletCore);
-        // verifyEmergencyExit(morphoWethGauntletLrt);
+        verifyEmergencyExit(morphoWethGauntletLrt);
         verifyEmergencyExit(morphoWethGauntletPrime);
+
+        // NOTE: not used anymore
+        // address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
+        // address morphoUsdcUsualBoosted = 0xb6da41D4BDb484BDaD0BfAa79bC8E182E5095F7e;
+        // verifyEmergencyExit(morphoUsdcGauntletCore);
+        // verifyEmergencyExit(morphoUsdcUsualBoosted);
     }
 
     function test_morpho_base() public {

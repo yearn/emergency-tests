@@ -17,6 +17,7 @@ contract AcrossEmergencyWithdrawTest is Test {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
+        // NOTE: depricated vault, remove after
         address acrossWeth = 0x9861708f2ad2BD1ed8D4D12436C0d8EB1ED36f1c;
         verifyEmergencyExit(acrossWeth);
     }
