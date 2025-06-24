@@ -161,7 +161,9 @@ contract Base4626EmergencyWithdrawTest is Test {
         // valut value is both staked and asset value: https://github.com/yearn/tokenized-strategy-periphery/blob/f139be6286cb3d630b0bce6d6db812c709e5bb47/src/Bases/4626Compounder/Base4626Compounder.sol#L165
         assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
         assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
-        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value");
+        assertApproxEqAbs(
+            currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value"
+        );
     }
 
     function verifySturdyEmergencyExit(address strategyAddress) internal {
@@ -203,7 +205,9 @@ contract Base4626EmergencyWithdrawTest is Test {
         assertGe(currentBalance + roundingError, maxWithdrawAmount, "strategy didn't recover all asset");
         assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
         assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
-        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value");
+        assertApproxEqAbs(
+            currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value"
+        );
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -236,6 +240,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         assertEq(strategy.totalAssets(), assets, "emergency withdraw lost money");
         assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
         assertGe(currentBalance, maxWithdrawAmount, "strategy didn't recover all asset");
-        assertApproxEqAbs(currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, 10, "strategy lost value");
+        assertApproxEqAbs(
+            currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, 10, "strategy lost value"
+        );
     }
 }
