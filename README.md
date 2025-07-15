@@ -1,6 +1,6 @@
 # Emergency Withdraw Tests
 
-This repository contains tests that call the function `emergencyWithdraw()` on Yearn V3 strategies. The tests are organized by the protocol that the strategy is using. If the protocol is forked, it will be in the same file as the original protocol, e.g. `Spark` is forked from `Aave`, so the tests for both are in `AaveEmergencyWithdrawTest.t.sol`.
+This repository contains tests that call the function `emergencyWithdraw()` on Yearn V3 strategies. The tests are organized by the protocol that the strategy is using. If the protocol is forked, it will be in the same file as the original protocol, e.g. `Spark` is forked from `Aave`, so the tests for both are in `AaveEmergencyWithdrawTest.t.sol`. The tests also verify that the strategy has the correct roles set: `emergencyAdmin` and `management` are multisig with minimum 2/3 threshold.
 
 ## Getting Started
 

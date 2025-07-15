@@ -5,12 +5,13 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
 interface IAaveStrategy is ITokenizedStrategy {
     function aToken() external view returns (address);
 }
 
-contract AaveEmergencyWithdrawTest is Test {
+contract AaveEmergencyWithdrawTest is RolesVerification {
     function test_aave_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -21,15 +22,23 @@ contract AaveEmergencyWithdrawTest is Test {
         address aaveDai = 0xEed00e00236cD7F36F2558D8b5fD05046449599D;
         address aaveUsds = 0x832c30802054F60f0CeDb5BE1F9A0e3da2a0Cab4;
         address aaveWeth = 0x90759801579208B28D2D36D13b1ED7443D1b717F;
+
+        console.log("aaveUsdc", aaveUsdc);
         verifyEmergencyExit(aaveUsdc);
+        console.log("aaveUsdt", aaveUsdt);
         verifyEmergencyExit(aaveUsdt);
+        console.log("aaveCrv", aaveCrv);
         verifyEmergencyExit(aaveCrv);
+        console.log("aaveDai", aaveDai);
         verifyEmergencyExit(aaveDai);
+        console.log("aaveUsds", aaveUsds);
         verifyEmergencyExit(aaveUsds);
+        console.log("aaveWeth", aaveWeth);
         verifyEmergencyExit(aaveWeth);
 
         // Lido market
         address aaveLidoWeth = 0xC7baE383738274ea8C3292d53AfBB3b42B348DF0;
+        console.log("aaveLidoWeth", aaveLidoWeth);
         verifyEmergencyExit(aaveLidoWeth);
     }
 
@@ -40,8 +49,12 @@ contract AaveEmergencyWithdrawTest is Test {
         address aaveUsdt = 0x4aE5CE819e7D678b07E8D0f483d351E2c8e8B8D3;
         address aaveUsdc = 0xd89ee1E95f7728f6964CF321E2648cCd29a881f1;
         address aaveUsdc3 = 0x85968BF0f1f110C707fEF10a59f80118F349c058;
+
+        console.log("aaveUsdt", aaveUsdt);
         verifyEmergencyExit(aaveUsdt);
+        console.log("aaveUsdc", aaveUsdc);
         verifyEmergencyExit(aaveUsdc);
+        console.log("aaveUsdc3", aaveUsdc3);
         verifyEmergencyExit(aaveUsdc3);
     }
 
@@ -55,21 +68,32 @@ contract AaveEmergencyWithdrawTest is Test {
         address aaveUsdce = 0xdB92B89Ca415c0dab40Dc96E99Fc411C08F20780;
         address aaveWmatic = 0x12c3Ad898e8eB1C0ec0Bb74f9748F36C46593F68;
         address aaveDai = 0xf4F9d5697341B4C9B0Cc8151413e05A90f7dc24F;
+
+        console.log("aaveWeth", aaveWeth);
         verifyEmergencyExit(aaveWeth);
+        console.log("aaveUsdt", aaveUsdt);
         verifyEmergencyExit(aaveUsdt);
+        console.log("aaveUsdc", aaveUsdc);
         verifyEmergencyExit(aaveUsdc);
+        console.log("aaveUsdce", aaveUsdce);
         verifyEmergencyExit(aaveUsdce);
+        console.log("aaveWmatic", aaveWmatic);
         verifyEmergencyExit(aaveWmatic);
+        console.log("aaveDai", aaveDai);
         verifyEmergencyExit(aaveDai);
     }
 
-    function test_spark_dai_mainnet() public {
+    function test_spark_mainnet() public {
         // Spark is the fork of Aave
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
 
         address sparkDai = 0x1fd862499e9b9402DE6c599b6C391f83981180Ab;
+        console.log("sparkDai", sparkDai);
         verifyEmergencyExit(sparkDai);
+
+        // TODO: add spark USDS compounder
+        // address sparkUsds = 0xc9f01b5c6048B064E6d925d1c2d7206d4fEeF8a3;
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -85,10 +109,9 @@ contract AaveEmergencyWithdrawTest is Test {
         uint256 aTokenBalanceBefore = aToken.balanceOf(address(strategy));
 
         // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        // assertNotEq(admin, address(0), "emergencyAdmin not set"); // TODO: enable when emergencyAdmin is set
+        verifyRoles(strategy);
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
         if (maxWithdrawAmount < 100) {

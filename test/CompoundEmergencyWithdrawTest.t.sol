@@ -5,12 +5,13 @@ import "forge-std/Test.sol";
 
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
 interface ICompStrategy is ITokenizedStrategy {
     function comet() external view returns (address);
 }
 
-contract CompoundEmergencyWithdrawTest is Test {
+contract CompoundEmergencyWithdrawTest is RolesVerification {
     function test_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -19,9 +20,14 @@ contract CompoundEmergencyWithdrawTest is Test {
         address compUsdt = 0x206db0A0Af10Bec57784045e089A418771D20227;
         address compWeth = 0x23eE3D14F09946A084350CC6A7153fc6eb918817;
         address compUsds = 0x6701DEa9809dEaf068B8445798d0E19B025480Fe;
+
+        console.log("compUsdc", compUsdc);
         verifyEmergencyExit(compUsdc);
+        console.log("compUsdt", compUsdt);
         verifyEmergencyExit(compUsdt);
+        console.log("compWeth", compWeth);
         verifyEmergencyExit(compWeth);
+        console.log("compUsds", compUsds);
         verifyEmergencyExit(compUsds);
     }
 
@@ -31,7 +37,10 @@ contract CompoundEmergencyWithdrawTest is Test {
 
         address compUsdc = 0xCACc53bAcCe744ac7b5C1eC7eb7e3Ab01330733b;
         address compUsdce = 0x1bd173F9a1186A1AbE680071E0F57d4D83c18430;
+
+        console.log("compUsdc", compUsdc);
         verifyEmergencyExit(compUsdc);
+        console.log("compUsdce", compUsdce);
         verifyEmergencyExit(compUsdce);
     }
 
@@ -41,7 +50,10 @@ contract CompoundEmergencyWithdrawTest is Test {
 
         address compUsdt = 0x0fEFEe13864c431717f5B2678607b6ce532a170C;
         address compUsdce = 0xb1403908F772E4374BB151F7C67E88761a0Eb4f1;
+
+        console.log("compUsdt", compUsdt);
         verifyEmergencyExit(compUsdt);
+        console.log("compUsdce", compUsdce);
         verifyEmergencyExit(compUsdce);
     }
 
@@ -54,11 +66,11 @@ contract CompoundEmergencyWithdrawTest is Test {
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         // uint256 balanceOfBase = ERC20(strategy.comet()).balanceOf(address(strategy));
 
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
         strategy.emergencyWithdraw(maxWithdrawAmount);
