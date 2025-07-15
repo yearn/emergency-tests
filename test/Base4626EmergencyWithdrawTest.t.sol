@@ -8,6 +8,7 @@ import "src/IVault.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {IERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
 interface IBase4626Compounder is ITokenizedStrategy {
     function vault() external view returns (address);
@@ -29,7 +30,7 @@ interface ISturdy {
     function pair() external view returns (address);
 }
 
-contract Base4626EmergencyWithdrawTest is Test {
+contract Base4626EmergencyWithdrawTest is RolesVerification {
     function test_gearbox_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -38,8 +39,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
         address gearboxUsdc = 0xf6E2d36c489e5B361CdC962D4568ceA663AD5ddC;
+
+        console.log("gearboxWeth", gearboxWeth);
         verifyGearboxEmergencyExit(gearboxWeth);
+        console.log("gearboxCrv", gearboxCrv);
         verifyGearboxEmergencyExit(gearboxCrv);
+        console.log("gearboxUsdc", gearboxUsdc);
         verifyGearboxEmergencyExit(gearboxUsdc);
     }
 
@@ -51,8 +56,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
         address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
         address sturdyPxEth = 0xC40dC53931cd184F782f3602d95C7e3609706004;
+
+        console.log("sturdyCrvCompounder", sturdyCrvCompounder);
         verifySturdyEmergencyExit(sturdyCrvCompounder);
+        console.log("sturdyWeth", sturdyWeth);
         verifySturdyEmergencyExit(sturdyWeth);
+        console.log("sturdyPxEth", sturdyPxEth);
         verifySturdyEmergencyExit(sturdyPxEth);
     }
 
@@ -69,13 +78,22 @@ contract Base4626EmergencyWithdrawTest is Test {
         address morphoDaiGauntletCore = 0x09580f2305a335218bdB2EB828387d52ED8Fc2F4;
         address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
+
+        console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
+        console.log("morphoYearnOgDai", morphoYearnOgDai);
         verifyEmergencyExit(morphoYearnOgDai);
+        console.log("morphoUsdcSteakhouse", morphoUsdcSteakhouse);
         verifyEmergencyExit(morphoUsdcSteakhouse);
+        console.log("morphoUsdcGauntletPrime", morphoUsdcGauntletPrime);
         verifyEmergencyExit(morphoUsdcGauntletPrime);
+        console.log("morphoUsdtGauntletPrime", morphoUsdtGauntletPrime);
         verifyEmergencyExit(morphoUsdtGauntletPrime);
+        console.log("morphoDaiGauntletCore", morphoDaiGauntletCore);
         verifyEmergencyExit(morphoDaiGauntletCore);
+        console.log("morphoWethGauntletLrt", morphoWethGauntletLrt);
         verifyEmergencyExit(morphoWethGauntletLrt);
+        console.log("morphoWethGauntletPrime", morphoWethGauntletPrime);
         verifyEmergencyExit(morphoWethGauntletPrime);
 
         // NOTE: not used anymore
@@ -95,10 +113,16 @@ contract Base4626EmergencyWithdrawTest is Test {
         address morphoUsdcMoonwell = 0xd5428B889621Eee8060fc105AA0AB0Fa2e344468;
         address morphoEurcMoonwell = 0x985CC9c306Bfe075F7c67EC275fb0b80F0b21976;
         address morphoWethMoonwell = 0xEF34B4Dcb851385b8F3a8ff460C34aDAFD160802;
+
+        console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
+        console.log("morphoYearnOgUsdc", morphoYearnOgUsdc);
         verifyEmergencyExit(morphoYearnOgUsdc);
+        console.log("morphoUsdcMoonwell", morphoUsdcMoonwell);
         verifyEmergencyExit(morphoUsdcMoonwell);
+        console.log("morphoEurcMoonwell", morphoEurcMoonwell);
         verifyEmergencyExit(morphoEurcMoonwell);
+        console.log("morphoWethMoonwell", morphoWethMoonwell);
         verifyEmergencyExit(morphoWethMoonwell);
     }
 
@@ -122,15 +146,25 @@ contract Base4626EmergencyWithdrawTest is Test {
         address ausdGauntlet = 0xF7EDe5332c6b4A235be4aA3c019222CFe72e984F;
         address ausdStakehouse = 0xC1Ec6d26902949Bf6cbb0c9859dbEAD1E87FB243;
 
+        console.log("usdcStakehousePrime", usdcStakehousePrime);
         verifyEmergencyExit(usdcStakehousePrime);
+        console.log("usdcGauntlet", usdcGauntlet);
         verifyEmergencyExit(usdcGauntlet);
+        console.log("usdcYearnOG", usdcYearnOG);
         verifyEmergencyExit(usdcYearnOG);
+        console.log("usdtGauntlet", usdtGauntlet);
         verifyEmergencyExit(usdtGauntlet);
+        console.log("usdtYearnOG", usdtYearnOG);
         verifyEmergencyExit(usdtYearnOG);
+        console.log("wbtcGauntlet", wbtcGauntlet);
         verifyEmergencyExit(wbtcGauntlet);
+        console.log("wethGauntlet", wethGauntlet);
         verifyEmergencyExit(wethGauntlet);
+        console.log("wethYearnOG", wethYearnOG);
         verifyEmergencyExit(wethYearnOG);
+        console.log("ausdGauntlet", ausdGauntlet);
         verifyEmergencyExit(ausdGauntlet);
+        console.log("ausdStakehouse", ausdStakehouse);
         verifyEmergencyExit(ausdStakehouse);
     }
 
@@ -142,8 +176,11 @@ contract Base4626EmergencyWithdrawTest is Test {
         address compoundBlueWeth = 0xD4a0AA006e0f70580Aaa7ee1FD04Fa447c36B259;
         // address compoundBlueUsdc = 0x6E9ac188DbCC14632a253aA9Ce2783cD712aB3cA;
         address compoundBlueUsdt = 0x9d1046ceCB0662037b13dECF1CD125C4Aa3fb65B;
+
+        console.log("compoundBlueWeth", compoundBlueWeth);
         verifyEmergencyExit(compoundBlueWeth);
         // verifyEmergencyExit(compoundBlueUsdc);
+        console.log("compoundBlueUsdt", compoundBlueUsdt);
         verifyEmergencyExit(compoundBlueUsdt);
     }
 
@@ -153,6 +190,8 @@ contract Base4626EmergencyWithdrawTest is Test {
         console.log("Current block number on mainnet:", block.number);
 
         address eulerPrimeWeth = 0xaf48f006e75AF050c4136F5a32B69e3FE1C4140f;
+
+        console.log("eulerPrimeWeth", eulerPrimeWeth);
         verifyEmergencyExit(eulerPrimeWeth);
     }
 
@@ -165,11 +204,11 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 valueOfVault = strategy.valueOfVault();
 
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        // assertNotEq(admin, address(0), "emergencyAdmin not set"); // TODO: enable when emergencyAdmin is set
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         // IMPORTANT: need to override this: https://github.com/yearn/yearn-strategies/issues/642#issuecomment-2402732907
         IERC4626 vault = IERC4626(strategy.vault());
@@ -207,11 +246,11 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 valueOfVault = strategy.valueOfVault();
 
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        // assertNotEq(admin, address(0), "emergencyAdmin not set"); // TODO: enable when emergencyAdmin is set
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         IVault vault = IVault(strategy.vault());
         ISturdy sturdy = ISturdy(vault.default_queue(0));
@@ -253,11 +292,12 @@ contract Base4626EmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 valueOfVault = strategy.valueOfVault();
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
         if (maxWithdrawAmount < 100) {

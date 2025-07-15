@@ -6,8 +6,9 @@ import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
-contract SiloEmergencyWithdrawTest is Test {
+contract SiloEmergencyWithdrawTest is RolesVerification {
     function test_silo_arbitrum() public {
         uint256 mainnetFork = vm.createFork("arbitrum");
         vm.selectFork(mainnetFork);
@@ -28,11 +29,11 @@ contract SiloEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         uint256 maxWithdrawAmount = strategy.availableWithdrawLimit(address(0));
         strategy.emergencyWithdraw(maxWithdrawAmount);

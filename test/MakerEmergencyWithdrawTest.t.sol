@@ -5,12 +5,13 @@ import "forge-std/Test.sol";
 import "src/Contract.sol";
 import "src/ITokenizedStrategy.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
 interface IMakerStrategy is ITokenizedStrategy {
     function emergencyWithdrawDirect(uint256 _sharesSDAI, bool _usePSM, uint256 _swapAmount) external;
 }
 
-contract MakerEmergencyWithdrawTest is Test {
+contract MakerEmergencyWithdrawTest is RolesVerification {
     address private constant USDS = 0xdC035D45d973E3EC169d2276DDab16f1e407384F;
 
     function test_sky_rewards() public {
@@ -18,15 +19,14 @@ contract MakerEmergencyWithdrawTest is Test {
         vm.selectFork(mainnetFork);
 
         address skyRewardsCompounder = 0x0868076663Bbc6638ceDd27704cc8F0Fa53d5b81;
-        verifyEmergencyExit(skyRewardsCompounder);
-
-        // NOTE: depricated vaults
-        address skyRewardsCompounderOld = 0x4cE9c93513DfF543Bc392870d57dF8C04e89Ba0a;
-        verifyEmergencyExit(skyRewardsCompounderOld);
-        address usdsFarmerDai = 0x6acEDA98725505737c0F00a3dA0d047304052948;
-        verifyEmergencyExit(usdsFarmerDai);
-        address usdsFarmerUsdc = 0x602DA189F5aDa033E9aC7096Fc39C7F44a77e942;
-        verifyEmergencyExit(usdsFarmerUsdc);
+        // console.log("skyRewardsCompounder", skyRewardsCompounder);
+        // verifyEmergencyExit(skyRewardsCompounder);
+        // address daiToUsdsDepositor = 0xAeDF7d5F3112552E110e5f9D08c9997Adce0b78d;
+        // console.log("daiToUsdsDepositor", daiToUsdsDepositor);
+        // verifyEmergencyExit(daiToUsdsDepositor);
+        address usdcToUsdsDepositor = 0x39c0aEc5738ED939876245224aFc7E09C8480a52;
+        console.log("usdcToUsdsDepositor", usdcToUsdsDepositor);
+        verifyEmergencyExit(usdcToUsdsDepositor);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
@@ -37,10 +37,12 @@ contract MakerEmergencyWithdrawTest is Test {
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
-        address management = strategy.management();
-        vm.prank(management);
-        strategy.shutdownStrategy(); // TODO: remove after adding emergency admin
-        vm.prank(management);
+        // verify roles
+        verifyRoles(strategy);
+
+        // shutdown the strategy
+        vm.startPrank(strategy.emergencyAdmin());
+        strategy.shutdownStrategy();
         strategy.emergencyWithdraw(type(uint256).max);
 
         // verify that the strategy has recovered all assets

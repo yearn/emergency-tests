@@ -8,8 +8,9 @@ import "src/IVault.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {IERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
-contract Base4626EmergencyWithdrawTest is Test {
+contract BoldEmergencyWithdrawTest is RolesVerification {
     function test_bold_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -36,11 +37,11 @@ contract Base4626EmergencyWithdrawTest is Test {
         uint256 assets = strategy.totalAssets();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         // NOTE: this strategy doesn't use input amount
         strategy.emergencyWithdraw(type(uint256).max);
