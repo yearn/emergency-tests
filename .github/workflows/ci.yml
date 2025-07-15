@@ -14,6 +14,7 @@ env:
   OP_PRC_URL: ${{ secrets.OP_PRC_URL }}
   MATIC_RPC_URL: ${{ secrets.MATIC_RPC_URL }}
   BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
+  KATANA_RPC_URL: ${{ secrets.KATANA_RPC_URL }}
 
 jobs:
   run-ci:
