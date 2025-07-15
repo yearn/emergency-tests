@@ -102,6 +102,38 @@ contract Base4626EmergencyWithdrawTest is Test {
         verifyEmergencyExit(morphoWethMoonwell);
     }
 
+    function test_morpho_katana() public {
+        uint256 katanaFork = vm.createFork("katana");
+        vm.selectFork(katanaFork);
+        console.log("Current block number on katana:", block.number);
+
+        address usdcStakehousePrime = 0x58B369aEC52DD904f70122cF72ed311f7AAe3bAc;
+        address usdcGauntlet = 0xD46dFDAA7cAA8739B0e3274e2C085dFFc8d4776A;
+        address usdcYearnOG = 0x78EC25FBa1bAf6b7dc097Ebb8115A390A2a4Ee12;
+
+        address usdtGauntlet = 0x543CC24962b540430DD1121E83E8564770Da6810;
+        address usdtYearnOG = 0x156C729C78076b7cd815D01Ca6967c00c5ac8D9C;
+
+        address wbtcGauntlet = 0x0a1937F0D7f15B9ADee5d96616f269a0C6749C6d;
+
+        address wethGauntlet = 0xEA79C91540C7E884e6E0069Ce036E52f7BbB1194;
+        address wethYearnOG = 0x37a79Bfb9F645F8Ed0a9ead9c722710D8f47C431;
+
+        address ausdGauntlet = 0xF7EDe5332c6b4A235be4aA3c019222CFe72e984F;
+        address ausdStakehouse = 0xC1Ec6d26902949Bf6cbb0c9859dbEAD1E87FB243;
+
+        verifyEmergencyExit(usdcStakehousePrime);
+        verifyEmergencyExit(usdcGauntlet);
+        verifyEmergencyExit(usdcYearnOG);
+        verifyEmergencyExit(usdtGauntlet);
+        verifyEmergencyExit(usdtYearnOG);
+        verifyEmergencyExit(wbtcGauntlet);
+        verifyEmergencyExit(wethGauntlet);
+        verifyEmergencyExit(wethYearnOG);
+        verifyEmergencyExit(ausdGauntlet);
+        verifyEmergencyExit(ausdStakehouse);
+    }
+
     function test_compound_blue_polygon() public {
         uint256 polygonFork = vm.createFork("polygon");
         vm.selectFork(polygonFork);
