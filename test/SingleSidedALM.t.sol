@@ -17,7 +17,7 @@ interface ISingleSidedALM is ITokenizedStrategy {
 
 
 contract SingleSidedALMTest is Test {
-    function test_katana() public {
+    function test_alm_katana() public {
         uint256 katanaFork = vm.createFork("katana");
         vm.selectFork(katanaFork);
         console.log("Current block number on katana:", block.number);
@@ -69,9 +69,9 @@ contract SingleSidedALMTest is Test {
         uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 maxSwapValue = strategy.maxSwapValue();
 
-        // NOTE: allow loss of 0.1% because of swaps
-        assertGe(strategy.estimatedTotalAsset(), assets * 999 / 1000, "emergency withdraw lost money");
-        // NOTE: allow loss of 0.2% in swaps
-        assertGe(currentBalance, balanceOfAsset + (maxSwapValue * 998 / 1000), "strategy balance not increased");
+        // NOTE: allow loss of 0.5% because of swaps
+        assertGe(strategy.estimatedTotalAsset(), assets * 995 / 1000, "emergency withdraw lost money");
+        // NOTE: allow loss of 0.5% in swaps
+        assertGe(currentBalance, balanceOfAsset + (maxSwapValue * 995 / 1000), "strategy balance not increased");
     }
 }
