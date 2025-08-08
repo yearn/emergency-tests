@@ -19,11 +19,11 @@ contract MakerEmergencyWithdrawTest is RolesVerification {
         vm.selectFork(mainnetFork);
 
         address skyRewardsCompounder = 0x0868076663Bbc6638ceDd27704cc8F0Fa53d5b81;
-        // console.log("skyRewardsCompounder", skyRewardsCompounder);
-        // verifyEmergencyExit(skyRewardsCompounder);
-        // address daiToUsdsDepositor = 0xAeDF7d5F3112552E110e5f9D08c9997Adce0b78d;
-        // console.log("daiToUsdsDepositor", daiToUsdsDepositor);
-        // verifyEmergencyExit(daiToUsdsDepositor);
+        console.log("skyRewardsCompounder", skyRewardsCompounder);
+        verifyEmergencyExit(skyRewardsCompounder);
+        address daiToUsdsDepositor = 0xAeDF7d5F3112552E110e5f9D08c9997Adce0b78d;
+        console.log("daiToUsdsDepositor", daiToUsdsDepositor);
+        verifyEmergencyExit(daiToUsdsDepositor);
         address usdcToUsdsDepositor = 0x39c0aEc5738ED939876245224aFc7E09C8480a52;
         console.log("usdcToUsdsDepositor", usdcToUsdsDepositor);
         verifyEmergencyExit(usdcToUsdsDepositor);

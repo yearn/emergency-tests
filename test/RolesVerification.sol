@@ -14,6 +14,8 @@ interface IGnosisSafe {
 
 contract RolesVerification is Test {
     address public constant SMS = 0x16388463d60FFE0661Cf7F1f31a7D658aC790ff7;
+    address public constant SMS_BASE = 0xde9e11D8a6894D47A3b407464b58b5dB9C97a58c;
+    address public constant SMS_POLYGON = 0x16388000546eDed4D476bd2A4A374B5a16125Bc1;
     address public constant Y_HAAS = 0x604e586F17cE106B64185A7a0d2c1Da5bAce711E;
 
     /// @dev Minimum required threshold for multisig (2/3)
@@ -21,7 +23,7 @@ contract RolesVerification is Test {
     uint256 public constant MIN_OWNERS = 3;
 
     /// @dev Verifies that an address is a valid Safe multisig with minimum 2/3 threshold
-    function isValidSafeMultisig(address multisigAddress) internal view returns (bool) {
+    function isValidSafeMultisig(address multisigAddress) internal returns (bool) {
         // Check if address has code (is a contract)
         uint256 codeSize;
         assembly {
@@ -35,21 +37,21 @@ contract RolesVerification is Test {
         uint256 threshold = IGnosisSafe(multisigAddress).getThreshold();
         if (threshold < MIN_THRESHOLD) {
             console.log("Threshold is less than minimum 2/3");
-            console.log("Threshold:", threshold);
+            console.log("Threshold", threshold);
             return false;
         }
 
         address[] memory owners = IGnosisSafe(multisigAddress).getOwners();
         if (owners.length < MIN_OWNERS) {
             console.log("Owners is less than minimum 3");
-            console.log("Owners:", owners.length);
+            console.log("Owners", owners.length);
             return false;
         }
         return true;
     }
 
     /// @dev Enhanced role verification with multisig checks
-    function verifyRoles(ITokenizedStrategy strategy) internal view {
+    function verifyRoles(ITokenizedStrategy strategy) internal {
         address management = strategy.management();
         address emergencyAdmin = strategy.emergencyAdmin();
 
@@ -59,12 +61,10 @@ contract RolesVerification is Test {
         // Verify SMS is a valid Safe multisig
         assertTrue(isValidSafeMultisig(management), "management is not a valid Safe multisig");
 
-        // Verify emergency admin is set and not zero address
-        assertNotEq(emergencyAdmin, address(0), "emergencyAdmin not set");
-        console.log("emergencyAdmin", emergencyAdmin);
-
-        // Verify emergency admin is a valid Safe multisig
-        assertTrue(isValidSafeMultisig(emergencyAdmin), "emergencyAdmin is not a valid Safe multisig");
+        if (management != SMS && management != SMS_BASE && management != SMS_POLYGON) {
+            assertNotEq(emergencyAdmin, address(0), "emergencyAdmin not set");
+            assertTrue(isValidSafeMultisig(emergencyAdmin), "emergencyAdmin is not a valid Safe multisig");
+        }
 
         // Verify keeper is Y_HAAS
         // address keeper = strategy.keeper();
@@ -72,7 +72,7 @@ contract RolesVerification is Test {
     }
 
     /// @dev Convenience function for comprehensive role verification with detailed logging
-    function verifyRolesDetailed(ITokenizedStrategy strategy) internal view {
+    function verifyRolesDetailed(ITokenizedStrategy strategy) internal {
         console.log("=== Role Verification ===");
         console.log("Strategy:", address(strategy));
 

@@ -34,7 +34,7 @@ contract SingleSidedALMTest is RolesVerification {
         address ethWeeth = 0x38663f9A0e89eBc29A2906d355A0ab86964A0BAd;
 
         address wbtcBtck = 0x4d38547d24e607C7390717F22ae373529cffF90C;
-        address wbtcLbtc = 0x069B9db656f6940dC55B08E96bE33c304AC18746;
+        address wbtcLbtc = 0x9cd74e38036691a3E64E859C0DB27A9Fe038410d;
 
         console.log("usdcAusd", usdcAusd);
         verifyEmergencyExit(usdcAusd);
