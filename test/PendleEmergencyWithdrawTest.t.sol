@@ -13,36 +13,7 @@ contract PendleEmergencyWithdrawTest is Test {
     uint256 private constant MAX_LOSS_BPS = 100; // 1%
     uint256 private constant BPS = 10_000;
 
-    function _test_pendle_mainnet() public {
-        uint256 mainnetFork = vm.createFork("mainnet");
-        vm.selectFork(mainnetFork);
-
-        // NOTE: not used by yearn anymore
-        // IVault weETHVault = IVault(0xe5175a2EB7C40bC5f0E9DE4152caA14eab0fFCb7);
-        // verifyAllQueuedStrategies(weETHVault);
-        // IVault agEthVault = IVault(0xDDa02A2FA0bb0ee45Ba9179a3fd7e65E5D3B2C90);
-        // verifyAllQueuedStrategies(agEthVault);
-        // IVault lbtcVault = IVault(0x57a8b4061AA598d2Bb5f70C5F931a75C9F511fc8);
-        // verifyAllQueuedStrategies(lbtcVault);
-    }
-
-    function _test_pendle_arbitrum() public {
-        uint256 mainnetFork = vm.createFork("arbitrum");
-        vm.selectFork(mainnetFork);
-
-        // NOTE: not used by yearn anymore
-        // IVault usdeVault = IVault(0x34a2b066AF16409648eF15d239E656edB8790ca0);
-        // verifyAllQueuedStrategies(usdeVault);
-        // empty vaults
-        // IVault weEthVault = IVault(0x044E75fCbF7BD3f8f4577FF317554e9c0037F145);
-        // verifyAllQueuedStrategies(weEthVault);
-        // IVault ezETHVault = IVault(0x0F2ae7531A83982F15ff1D26B165E2bF3D7566da);
-        // verifyAllQueuedStrategies(ezETHVault);
-        // IVault rsETH = IVault(0x1Dd930ADD968ff5913C3627dAA1e6e6FCC9dc544);
-        // verifyAllQueuedStrategies(rsETH);
-        // IVault rETH = IVault(0xC40DA6a01Ac36F39736731ee50fb3b1B8204e2D3);
-        // verifyAllQueuedStrategies(rETH);
-    }
+    // NOTE: no active strategies
 
     function verifyAllQueuedStrategies(IVault vault) internal {
         address[] memory queues = vault.get_default_queue();

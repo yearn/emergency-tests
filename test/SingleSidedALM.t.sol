@@ -8,6 +8,7 @@ import "src/IVault.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {IERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import {RolesVerification} from "./RolesVerification.sol";
 
 interface ISingleSidedALM is ITokenizedStrategy {
     function estimatedTotalAsset() external view returns (uint256);
@@ -15,9 +16,8 @@ interface ISingleSidedALM is ITokenizedStrategy {
     function maxSwapValue() external view returns (uint256);
 }
 
-
-contract SingleSidedALMTest is Test {
-    function test_alm_katana() public {
+contract SingleSidedALMTest is RolesVerification {
+    function test_katana() public {
         uint256 katanaFork = vm.createFork("katana");
         vm.selectFork(katanaFork);
         console.log("Current block number on katana:", block.number);
@@ -34,16 +34,25 @@ contract SingleSidedALMTest is Test {
         address ethWeeth = 0x38663f9A0e89eBc29A2906d355A0ab86964A0BAd;
 
         address wbtcBtck = 0x4d38547d24e607C7390717F22ae373529cffF90C;
-        address wbtcLbtc = 0x069B9db656f6940dC55B08E96bE33c304AC18746;
+        address wbtcLbtc = 0x9cd74e38036691a3E64E859C0DB27A9Fe038410d;
 
+        console.log("usdcAusd", usdcAusd);
         verifyEmergencyExit(usdcAusd);
+        console.log("usdcUsdt", usdcUsdt);
         verifyEmergencyExit(usdcUsdt);
+        console.log("usdtAusd", usdtAusd);
         verifyEmergencyExit(usdtAusd);
+        console.log("usdtUsdc", usdtUsdc);
         verifyEmergencyExit(usdtUsdc);
+        console.log("ausdUsdc", ausdUsdc);
         verifyEmergencyExit(ausdUsdc);
+        console.log("ausdUsdt", ausdUsdt);
         verifyEmergencyExit(ausdUsdt);
+        console.log("ethWeeth", ethWeeth);
         verifyEmergencyExit(ethWeeth);
+        console.log("wbtcBtck", wbtcBtck);
         verifyEmergencyExit(wbtcBtck);
+        console.log("wbtcLbtc", wbtcLbtc);
         verifyEmergencyExit(wbtcLbtc);
     }
 
@@ -56,11 +65,11 @@ contract SingleSidedALMTest is Test {
         uint256 assets = strategy.estimatedTotalAsset();
         assertGt(assets, 0, "!totalAssets");
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        // verify that the strategy has set an emergency admin
-        address admin = strategy.emergencyAdmin();
-        assertNotEq(admin, address(0), "emergencyAdmin not set");
+        // verify roles
+        verifyRoles(strategy);
+
         // shutdown the strategy
-        vm.startPrank(admin);
+        vm.startPrank(strategy.emergencyAdmin());
         strategy.shutdownStrategy();
         // NOTE: amount is scaled down do maximum possible
         strategy.emergencyWithdraw(type(uint256).max);
