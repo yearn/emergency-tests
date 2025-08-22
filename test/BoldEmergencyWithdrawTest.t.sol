@@ -17,25 +17,32 @@ contract BoldEmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address styBold = 0x23346B04a7f55b8760E5860AA5A77383D63491cD;
-        address strategy = getStrategyFromStakedStrategy(ITokenizedStrategy(styBold));
-        address liquityV2SPStrategy = 0x2048A730f564246411415f719198d6f7c10A7961;
-        // NOTE: detect if the strategy has changed and if we need to update the test
-        assertEq(strategy, liquityV2SPStrategy);
-        verifyEmergencyExit(liquityV2SPStrategy);
+        address[] memory strategies = getStrategyFromStakedStrategy(ITokenizedStrategy(styBold));
+        for (uint256 i = 0; i < strategies.length; i++) {
+            verifyEmergencyExit(strategies[i]);
+        }
     }
 
-    function getStrategyFromStakedStrategy(ITokenizedStrategy strategy) internal returns (address) {
+    function getStrategyFromStakedStrategy(ITokenizedStrategy strategy) internal returns (address[] memory) {
         IVault vault = IVault(strategy.asset());
         address[] memory queue = vault.get_default_queue();
-        assertGt(queue.length, 0, "!queue.length");
-        return queue[0];
+        assertGt(queue.length, 0, "Bold vault must have strategies in queue");
+        assertGt(vault.totalSupply(), 0, "Bold vault must have supply");
+        assertGt(vault.totalAssets(), 0, "Bold vault must have assets");
+        return queue;
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
         ITokenizedStrategy strategy = ITokenizedStrategy(strategyAddress);
-        assertGt(strategy.totalSupply(), 0, "!totalSupply");
+        if (strategy.totalSupply() == 0) {
+            console.log("Strategy has no supply, skipping", strategyAddress);
+            return;
+        }
         uint256 assets = strategy.totalAssets();
-        assertGt(assets, 0, "!totalAssets");
+        if (assets == 0) {
+            console.log("Strategy has no assets, skipping", strategyAddress);
+            return;
+        }
         uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
 
         verifyRoles(strategy);
