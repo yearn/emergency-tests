@@ -220,6 +220,20 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(fluidUsdc);
     }
 
+    function test_fluid_polygon() public {
+        uint256 baseFork = vm.createFork("polygon");
+        vm.selectFork(baseFork);
+        console.log("Current block number on base:", block.number);
+
+        address fluidUsdc = 0xD811a47cfD17355F47ac49Be02c4744A926dd16B;
+        address fluidUsdt = 0xE30461F1270BA52d45DF1e773AEfE594C7E430DC;
+
+        console.log("fluidUsdc", fluidUsdc);
+        verifyEmergencyExit(fluidUsdc);
+        console.log("fluidUsdt", fluidUsdt);
+        verifyEmergencyExit(fluidUsdt);
+    }
+
     function verifyGearboxEmergencyExit(address strategyAddress) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
