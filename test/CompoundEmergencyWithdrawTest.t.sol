@@ -17,9 +17,13 @@ contract CompoundEmergencyWithdrawTest is RolesVerification {
         vm.selectFork(mainnetFork);
 
         address compUsdc = 0x7eE351aA702C8fC735D77Fb229b7676AC15D7c79;
+        vm.label(compUsdc, "compUsdc");
         address compUsdt = 0x206db0A0Af10Bec57784045e089A418771D20227;
+        vm.label(compUsdt, "compUsdt");
         address compWeth = 0x23eE3D14F09946A084350CC6A7153fc6eb918817;
+        vm.label(compWeth, "compWeth");
         address compUsds = 0x6701DEa9809dEaf068B8445798d0E19B025480Fe;
+        vm.label(compUsds, "compUsds");
 
         console.log("compUsdc", compUsdc);
         verifyEmergencyExit(compUsdc);
@@ -36,7 +40,9 @@ contract CompoundEmergencyWithdrawTest is RolesVerification {
         vm.selectFork(mainnetFork);
 
         address compUsdc = 0xCACc53bAcCe744ac7b5C1eC7eb7e3Ab01330733b;
+        vm.label(compUsdc, "compUsdc");
         address compUsdce = 0x1bd173F9a1186A1AbE680071E0F57d4D83c18430;
+        vm.label(compUsdce, "compUsdc.e");
 
         console.log("compUsdc", compUsdc);
         verifyEmergencyExit(compUsdc);
@@ -49,7 +55,9 @@ contract CompoundEmergencyWithdrawTest is RolesVerification {
         vm.selectFork(mainnetFork);
 
         address compUsdt = 0x0fEFEe13864c431717f5B2678607b6ce532a170C;
+        vm.label(compUsdt, "compUsdt");
         address compUsdce = 0xb1403908F772E4374BB151F7C67E88761a0Eb4f1;
+        vm.label(compUsdce, "compUsdc.e");
 
         console.log("compUsdt", compUsdt);
         verifyEmergencyExit(compUsdt);

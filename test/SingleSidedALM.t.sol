@@ -23,18 +23,27 @@ contract SingleSidedALMTest is RolesVerification {
         console.log("Current block number on katana:", block.number);
 
         address usdcAusd = 0x1Ea30764fF9ceaCe69E55e9bf49eB37CdBa8e1De;
+        vm.label(usdcAusd, "usdcAusd");
         address usdcUsdt = 0xF0a8A393ABE6dC35E873FF795D013aDcc72604d2;
+        vm.label(usdcUsdt, "usdcUsdt");
 
         address usdtAusd = 0xeeDbED5270791521969E1c693d81796b045dC483;
+        vm.label(usdtAusd, "usdtAusd");
         address usdtUsdc = 0xb2f33a48F79cbc9d3f9b32FDA0cBC89cF67af0AC;
+        vm.label(usdtUsdc, "usdtUsdc");
 
         address ausdUsdc = 0x3e7236AA960155159A8d3D7303896Fc2A21D2154;
+        vm.label(ausdUsdc, "ausdUsdc");
         address ausdUsdt = 0x7214Dad6D78561728bcB6053d0C1bd5C9D1D53d8;
+        vm.label(ausdUsdt, "ausdUsdt");
 
         address ethWeeth = 0x38663f9A0e89eBc29A2906d355A0ab86964A0BAd;
+        vm.label(ethWeeth, "ethWeeth");
 
         address wbtcBtck = 0x4d38547d24e607C7390717F22ae373529cffF90C;
+        vm.label(wbtcBtck, "wbtcBtck");
         address wbtcLbtc = 0x9cd74e38036691a3E64E859C0DB27A9Fe038410d;
+        vm.label(wbtcLbtc, "wbtcLbtc");
 
         console.log("usdcAusd", usdcAusd);
         verifyEmergencyExit(usdcAusd);

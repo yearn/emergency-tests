@@ -18,6 +18,13 @@ contract RolesVerification is Test {
     address public constant SMS_POLYGON = 0x16388000546eDed4D476bd2A4A374B5a16125Bc1;
     address public constant Y_HAAS = 0x604e586F17cE106B64185A7a0d2c1Da5bAce711E;
 
+    constructor() {
+        vm.label(SMS, "SMS");
+        vm.label(SMS_BASE, "SMS_BASE");
+        vm.label(SMS_POLYGON, "SMS_POLYGON");
+        vm.label(Y_HAAS, "Y_HAAS");
+    }
+
     /// @dev Minimum required threshold for multisig (2/3)
     uint256 public constant MIN_THRESHOLD = 2;
     uint256 public constant MIN_OWNERS = 3;

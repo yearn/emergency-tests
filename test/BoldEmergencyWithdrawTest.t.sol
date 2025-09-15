@@ -17,6 +17,7 @@ contract BoldEmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address styBold = 0x23346B04a7f55b8760E5860AA5A77383D63491cD;
+        vm.label(styBold, "styBold");
         address[] memory strategies = getStrategyFromStakedStrategy(ITokenizedStrategy(styBold));
         for (uint256 i = 0; i < strategies.length; i++) {
             verifyEmergencyExit(strategies[i]);

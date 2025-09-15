@@ -37,8 +37,11 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address gearboxWeth = 0xe92ade9eE76681f96C8BB0b352d5410ca5b35D70;
+        vm.label(gearboxWeth, "gearboxWeth");
         address gearboxCrv = 0xbf2e5BeD692C09aF8B39677e315F36aDF39bD685;
+        vm.label(gearboxCrv, "gearboxCrv");
         address gearboxUsdc = 0xf6E2d36c489e5B361CdC962D4568ceA663AD5ddC;
+        vm.label(gearboxUsdc, "gearboxUsdc");
 
         console.log("gearboxWeth", gearboxWeth);
         verifyGearboxEmergencyExit(gearboxWeth);
@@ -54,8 +57,11 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
+        vm.label(sturdyCrvCompounder, "sturdyCrvCompounder");
         address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
+        vm.label(sturdyWeth, "sturdyWeth");
         address sturdyPxEth = 0xC40dC53931cd184F782f3602d95C7e3609706004;
+        vm.label(sturdyPxEth, "sturdyPxEth");
 
         console.log("sturdyCrvCompounder", sturdyCrvCompounder);
         verifySturdyEmergencyExit(sturdyCrvCompounder);
@@ -71,13 +77,21 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address morphoYearnOgWeth = 0xd9BA99D93ea94a65b5BC838a0106cA3AbC82Ec4F;
+        vm.label(morphoYearnOgWeth, "morphoYearnOgWeth");
         address morphoYearnOgDai = 0x75f35498E0D053d0DBd2472BC06e7CbA1f0c7d3a;
+        vm.label(morphoYearnOgDai, "morphoYearnOgDai");
         address morphoUsdcSteakhouse = 0x074134A2784F4F66b6ceD6f68849382990Ff3215;
+        vm.label(morphoUsdcSteakhouse, "morphoUsdcSteakhouse");
         address morphoUsdcGauntletPrime = 0x694E47AFD14A64661a04eee674FB331bCDEF3737;
+        vm.label(morphoUsdcGauntletPrime, "morphoUsdcGauntletPrime");
         address morphoUsdtGauntletPrime = 0x6D2981FF9b8d7edbb7604de7A65BAC8694ac849F;
+        vm.label(morphoUsdtGauntletPrime, "morphoUsdtGauntletPrime");
         address morphoDaiGauntletCore = 0x09580f2305a335218bdB2EB828387d52ED8Fc2F4;
+        vm.label(morphoDaiGauntletCore, "morphoDaiGauntletCore");
         address morphoWethGauntletLrt = 0x70E75D8053e3Fb0Dda35e80EB16f208c7e4D54F4;
+        vm.label(morphoWethGauntletLrt, "morphoWethGauntletLrt");
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
+        vm.label(morphoWethGauntletPrime, "morphoWethGauntletPrime");
 
         console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
@@ -109,10 +123,15 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on base:", block.number);
 
         address morphoYearnOgWeth = 0xBDD79a7DF622E9d9e19a7d92Bc7ea212FA0D2F3E;
+        vm.label(morphoYearnOgWeth, "morphoYearnOgWeth");
         address morphoYearnOgUsdc = 0xF115C134c23C7A05FBD489A8bE3116EbF54B0D9f;
+        vm.label(morphoYearnOgUsdc, "morphoYearnOgUsdc");
         address morphoUsdcMoonwell = 0xd5428B889621Eee8060fc105AA0AB0Fa2e344468;
+        vm.label(morphoUsdcMoonwell, "morphoUsdcMoonwell");
         address morphoEurcMoonwell = 0x985CC9c306Bfe075F7c67EC275fb0b80F0b21976;
+        vm.label(morphoEurcMoonwell, "morphoEurcMoonwell");
         address morphoWethMoonwell = 0xEF34B4Dcb851385b8F3a8ff460C34aDAFD160802;
+        vm.label(morphoWethMoonwell, "morphoWethMoonwell");
 
         console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
@@ -132,19 +151,29 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on katana:", block.number);
 
         address usdcStakehousePrime = 0x58B369aEC52DD904f70122cF72ed311f7AAe3bAc;
+        vm.label(usdcStakehousePrime, "usdcStakehousePrime");
         address usdcGauntlet = 0xD46dFDAA7cAA8739B0e3274e2C085dFFc8d4776A;
+        vm.label(usdcGauntlet, "usdcGauntlet");
         address usdcYearnOG = 0x78EC25FBa1bAf6b7dc097Ebb8115A390A2a4Ee12;
+        vm.label(usdcYearnOG, "usdcYearnOG");
 
         address usdtGauntlet = 0x543CC24962b540430DD1121E83E8564770Da6810;
+        vm.label(usdtGauntlet, "usdtGauntlet");
         address usdtYearnOG = 0x156C729C78076b7cd815D01Ca6967c00c5ac8D9C;
+        vm.label(usdtYearnOG, "usdtYearnOG");
 
         address wbtcGauntlet = 0x0a1937F0D7f15B9ADee5d96616f269a0C6749C6d;
+        vm.label(wbtcGauntlet, "wbtcGauntlet");
 
         address wethGauntlet = 0xEA79C91540C7E884e6E0069Ce036E52f7BbB1194;
+        vm.label(wethGauntlet, "wethGauntlet");
         address wethYearnOG = 0x37a79Bfb9F645F8Ed0a9ead9c722710D8f47C431;
+        vm.label(wethYearnOG, "wethYearnOG");
 
         address ausdGauntlet = 0xF7EDe5332c6b4A235be4aA3c019222CFe72e984F;
+        vm.label(ausdGauntlet, "ausdGauntlet");
         address ausdStakehouse = 0xC1Ec6d26902949Bf6cbb0c9859dbEAD1E87FB243;
+        vm.label(ausdStakehouse, "ausdStakehouse");
 
         console.log("usdcStakehousePrime", usdcStakehousePrime);
         verifyEmergencyExit(usdcStakehousePrime);
@@ -174,8 +203,10 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on polygon:", block.number);
 
         address compoundBlueWeth = 0xD4a0AA006e0f70580Aaa7ee1FD04Fa447c36B259;
+        vm.label(compoundBlueWeth, "compoundBlueWeth");
         // address compoundBlueUsdc = 0x6E9ac188DbCC14632a253aA9Ce2783cD712aB3cA;
         address compoundBlueUsdt = 0x9d1046ceCB0662037b13dECF1CD125C4Aa3fb65B;
+        vm.label(compoundBlueUsdt, "compoundBlueUsdt");
 
         console.log("compoundBlueWeth", compoundBlueWeth);
         verifyEmergencyExit(compoundBlueWeth);
@@ -190,6 +221,7 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address eulerPrimeWeth = 0xaf48f006e75AF050c4136F5a32B69e3FE1C4140f;
+        vm.label(eulerPrimeWeth, "eulerPrimeWeth");
 
         console.log("eulerPrimeWeth", eulerPrimeWeth);
         verifyEmergencyExit(eulerPrimeWeth);
@@ -201,7 +233,9 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on mainnet:", block.number);
 
         address fluidUsdt = 0x4Bd05E6ff75b633F504F0fC501c1e257578C8A72;
+        vm.label(fluidUsdt, "fluidUsdt");
         address fluidUsdc = 0x00C8a649C9837523ebb406Ceb17a6378Ab5C74cF;
+        vm.label(fluidUsdc, "fluidUsdc");
 
         console.log("fluidUsdt", fluidUsdt);
         verifyEmergencyExit(fluidUsdt);
@@ -215,6 +249,7 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on base:", block.number);
 
         address fluidUsdc = 0x70ffFbacB53EF74903ac074aAE769414a70970d1;
+        vm.label(fluidUsdc, "fluidUsdc");
 
         console.log("fluidUsdc", fluidUsdc);
         verifyEmergencyExit(fluidUsdc);
@@ -226,7 +261,9 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         console.log("Current block number on base:", block.number);
 
         address fluidUsdc = 0xD811a47cfD17355F47ac49Be02c4744A926dd16B;
+        vm.label(fluidUsdc, "fluidUsdc");
         address fluidUsdt = 0xE30461F1270BA52d45DF1e773AEfE594C7E430DC;
+        vm.label(fluidUsdt, "fluidUsdt");
 
         console.log("fluidUsdc", fluidUsdc);
         verifyEmergencyExit(fluidUsdc);

@@ -14,8 +14,11 @@ contract SiloEmergencyWithdrawTest is RolesVerification {
         vm.selectFork(mainnetFork);
 
         address siloWbtc = 0xE82D060687C014B280b65df24AcD94A77251C784;
+        vm.label(siloWbtc, "siloWbtc");
         address siloWstEth = 0xA4B8873B4629c20f2167c0A2bC33B6AF8699dDc1;
+        vm.label(siloWstEth, "siloWstEth");
         address siloArb = 0xb739AE19620f7ECB4fb84727f205453aa5bc1AD2;
+        vm.label(siloArb, "siloArb");
         verifyEmergencyExit(siloWbtc);
         verifyEmergencyExit(siloWstEth);
         verifyEmergencyExit(siloArb);
