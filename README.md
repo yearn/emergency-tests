@@ -15,7 +15,6 @@ forge test
 ## Strategies Tested
 
 - [Aave V3](./test/AaveEmergencyWithdrawTest.t.sol) on mainnet, arbitrum and polygon
-- [Across](./test/AcrossEmergencyWithdrawTest.t.sol) on mainnet
 - [Compound V3](./test/CompoundEmergencyWithdrawTest.t.sol) on mainnet, arbitrum and polygon
 - [Euler](./test/Base4626EmergencyWithdrawTest.t.sol) on mainnet
 - [Gearbox](./test/Base4626EmergencyWithdrawTest.t.sol) on mainnet
