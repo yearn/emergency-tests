@@ -108,9 +108,6 @@ contract AaveEmergencyWithdrawTest is RolesVerification {
         vm.label(sparkDai, "sparkDai");
         console.log("sparkDai", sparkDai);
         verifyEmergencyExit(sparkDai);
-
-        // TODO: add spark USDS compounder
-        // address sparkUsds = 0xc9f01b5c6048B064E6d925d1c2d7206d4fEeF8a3;
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
