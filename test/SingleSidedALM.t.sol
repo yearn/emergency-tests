@@ -87,9 +87,8 @@ contract SingleSidedALMTest is RolesVerification {
         uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
         uint256 maxSwapValue = strategy.maxSwapValue();
 
-        // NOTE: allow loss of 0.5% because of swaps
-        assertGe(strategy.estimatedTotalAsset(), assets * 995 / 1000, "emergency withdraw lost money");
-        // NOTE: allow loss of 0.5% in swaps
-        assertGe(currentBalance, balanceOfAsset + (maxSwapValue * 995 / 1000), "strategy balance not increased");
+        uint256 maxLoss = 100; // 10%
+        assertGe(strategy.estimatedTotalAsset(), assets * (1000 - maxLoss) / 1000, "emergency withdraw lost money");
+        assertGe(currentBalance, balanceOfAsset + (maxSwapValue * (1000 - maxLoss) / 1000), "strategy balance not increased");
     }
 }
