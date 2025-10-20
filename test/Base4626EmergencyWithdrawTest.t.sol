@@ -92,6 +92,8 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         vm.label(morphoWethGauntletLrt, "morphoWethGauntletLrt");
         address morphoWethGauntletPrime = 0xeEB6Be70fF212238419cD638FAB17910CF61CBE7;
         vm.label(morphoWethGauntletPrime, "morphoWethGauntletPrime");
+        address morphoYearnOevUsdc = 0x888239Ffa9a0613F9142C808aA9F7d1948a14f75;
+        vm.label(morphoYearnOevUsdc, "morphoYearnOevUsdc");
 
         console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
@@ -109,6 +111,8 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(morphoWethGauntletLrt);
         console.log("morphoWethGauntletPrime", morphoWethGauntletPrime);
         verifyEmergencyExit(morphoWethGauntletPrime);
+        console.log("morphoYearnOevUsdc", morphoYearnOevUsdc);
+        verifyEmergencyExit(morphoYearnOevUsdc);
 
         // NOTE: not used anymore
         // address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
@@ -269,6 +273,17 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(fluidUsdc);
         console.log("fluidUsdt", fluidUsdt);
         verifyEmergencyExit(fluidUsdt);
+    }
+
+    function test_llama_lend_mainnet() public {
+        uint256 mainnetFork = vm.createFork("mainnet");
+        vm.selectFork(mainnetFork);
+        console.log("Current block number on mainnet:", block.number);
+
+        address crvUsdsreUsdLender = 0x09AcE8B2f2fE2189A5B37046BBaFa29Dce31c920;
+        vm.label(crvUsdsreUsdLender, "crvUsdsreUsdLender");
+        console.log("crvUsdsreUsdLender", crvUsdsreUsdLender);
+        verifyEmergencyExit(crvUsdsreUsdLender);
     }
 
     function verifyGearboxEmergencyExit(address strategyAddress) internal {
