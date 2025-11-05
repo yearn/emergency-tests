@@ -12,28 +12,29 @@ interface ICompStrategy is ITokenizedStrategy {
 }
 
 contract CompoundEmergencyWithdrawTest is RolesVerification {
-    function test_mainnet() public {
-        uint256 mainnetFork = vm.createFork("mainnet");
-        vm.selectFork(mainnetFork);
+    // NOTE: compound is paused on mainnet
+    // function test_mainnet() public {
+    //     uint256 mainnetFork = vm.createFork("mainnet");
+    //     vm.selectFork(mainnetFork);
 
-        address compUsdc = 0x7eE351aA702C8fC735D77Fb229b7676AC15D7c79;
-        vm.label(compUsdc, "compUsdc");
-        address compUsdt = 0x206db0A0Af10Bec57784045e089A418771D20227;
-        vm.label(compUsdt, "compUsdt");
-        address compWeth = 0x23eE3D14F09946A084350CC6A7153fc6eb918817;
-        vm.label(compWeth, "compWeth");
-        address compUsds = 0x6701DEa9809dEaf068B8445798d0E19B025480Fe;
-        vm.label(compUsds, "compUsds");
+    //     address compUsdc = 0x7eE351aA702C8fC735D77Fb229b7676AC15D7c79;
+    //     vm.label(compUsdc, "compUsdc");
+    //     address compUsdt = 0x206db0A0Af10Bec57784045e089A418771D20227;
+    //     vm.label(compUsdt, "compUsdt");
+    //     address compWeth = 0x23eE3D14F09946A084350CC6A7153fc6eb918817;
+    //     vm.label(compWeth, "compWeth");
+    //     address compUsds = 0x6701DEa9809dEaf068B8445798d0E19B025480Fe;
+    //     vm.label(compUsds, "compUsds");
 
-        console.log("compUsdc", compUsdc);
-        verifyEmergencyExit(compUsdc);
-        console.log("compUsdt", compUsdt);
-        verifyEmergencyExit(compUsdt);
-        console.log("compWeth", compWeth);
-        verifyEmergencyExit(compWeth);
-        console.log("compUsds", compUsds);
-        verifyEmergencyExit(compUsds);
-    }
+    //     console.log("compUsdc", compUsdc);
+    //     verifyEmergencyExit(compUsdc);
+    //     console.log("compUsdt", compUsdt);
+    //     verifyEmergencyExit(compUsdt);
+    //     console.log("compWeth", compWeth);
+    //     verifyEmergencyExit(compWeth);
+    //     console.log("compUsds", compUsds);
+    //     verifyEmergencyExit(compUsds);
+    // }
 
     function test_aribtrum() public {
         uint256 mainnetFork = vm.createFork("arbitrum");

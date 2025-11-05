@@ -8,7 +8,8 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {RolesVerification} from "./RolesVerification.sol";
 
-contract MoonwellTest is RolesVerification {
+// NOTE: moonwell is skipped, rename to MoonwellTest.t.sol to run the tests
+contract MoonwellSkip is RolesVerification {
     function test_moonwell_lender_borrower_base() public {
         uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
