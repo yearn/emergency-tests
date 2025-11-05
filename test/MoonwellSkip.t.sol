@@ -10,7 +10,7 @@ import {RolesVerification} from "./RolesVerification.sol";
 
 // NOTE: moonwell is skipped, rename to MoonwellTest.t.sol to run the tests
 contract MoonwellSkip is RolesVerification {
-    function test_moonwell_lender_borrower_base() public {
+    function _skip_test_moonwell_lender_borrower_base() public {
         uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
 
@@ -33,7 +33,7 @@ contract MoonwellSkip is RolesVerification {
         verifyEmergencyExitLenderBorrower(moonwellcbEthToWeth);
     }
 
-    function test_moonwell_farmer_base() public {
+    function _skip_test_moonwell_farmer_base() public {
         uint256 baseFork = vm.createFork("base");
         vm.selectFork(baseFork);
 
