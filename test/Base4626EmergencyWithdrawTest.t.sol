@@ -51,26 +51,6 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyGearboxEmergencyExit(gearboxUsdc);
     }
 
-    function test_sturdy_mainnet() public {
-        uint256 mainnetFork = vm.createFork("mainnet");
-        vm.selectFork(mainnetFork);
-        console.log("Current block number on mainnet:", block.number);
-
-        address sturdyCrvCompounder = 0x05329AAb081B125eEF7FbbC8b857428D478E692B;
-        vm.label(sturdyCrvCompounder, "sturdyCrvCompounder");
-        address sturdyWeth = 0x5f76526390d9cd9944d65C605C5006480FA1bFcB;
-        vm.label(sturdyWeth, "sturdyWeth");
-        address sturdyPxEth = 0xC40dC53931cd184F782f3602d95C7e3609706004;
-        vm.label(sturdyPxEth, "sturdyPxEth");
-
-        console.log("sturdyCrvCompounder", sturdyCrvCompounder);
-        verifySturdyEmergencyExit(sturdyCrvCompounder);
-        console.log("sturdyWeth", sturdyWeth);
-        verifySturdyEmergencyExit(sturdyWeth);
-        console.log("sturdyPxEth", sturdyPxEth);
-        verifySturdyEmergencyExit(sturdyPxEth);
-    }
-
     function test_morpho_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -328,50 +308,6 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         );
     }
 
-    function verifySturdyEmergencyExit(address strategyAddress) internal {
-        IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
-        // verify that the strategy has assets
-        assertGt(strategy.totalSupply(), 0, "!totalSupply");
-        uint256 assets = strategy.totalAssets();
-        assertGt(assets, 0, "!totalAssets");
-        uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
-        uint256 valueOfVault = strategy.valueOfVault();
-
-        // verify roles
-        verifyRoles(strategy);
-
-        // shutdown the strategy
-        vm.startPrank(strategy.emergencyAdmin());
-        strategy.shutdownStrategy();
-        IVault vault = IVault(strategy.vault());
-        ISturdy sturdy = ISturdy(vault.default_queue(0));
-        address pair = sturdy.pair();
-        uint256 maxWithdrawAmount =
-            Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair));
-        if (maxWithdrawAmount < 100) {
-            return; // skip dust
-        }
-        strategy.emergencyWithdraw(maxWithdrawAmount);
-
-        // verify that the strategy has recovered all assets
-        assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
-        uint256 strategyBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
-        assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
-
-        // study strategy has some rounding error because of converting assets to shares
-        uint256 roundingError = 10;
-        // verify strategy has recovered all assets or maximum possible
-        uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
-        uint256 currentValueOfVault = strategy.valueOfVault();
-
-        assertGe(currentBalance + roundingError, maxWithdrawAmount, "strategy didn't recover all asset");
-        assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
-        assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
-        assertApproxEqAbs(
-            currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value"
-        );
-    }
-
     function verifyEmergencyExit(address strategyAddress) internal {
         IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
         // verify that the strategy has assets
@@ -407,4 +343,50 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
             currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, 10, "strategy lost value"
         );
     }
+
+    // NOTE: sturdy don't have liquidity
+    // function verifySturdyEmergencyExit(address strategyAddress) internal {
+    //     IBase4626Compounder strategy = IBase4626Compounder(strategyAddress);
+    //     // verify that the strategy has assets
+    //     assertGt(strategy.totalSupply(), 0, "!totalSupply");
+    //     uint256 assets = strategy.totalAssets();
+    //     assertGt(assets, 0, "!totalAssets");
+    //     uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
+    //     uint256 valueOfVault = strategy.valueOfVault();
+
+    //     // verify roles
+    //     verifyRoles(strategy);
+
+    //     // shutdown the strategy
+    //     vm.startPrank(strategy.emergencyAdmin());
+    //     strategy.shutdownStrategy();
+    //     IVault vault = IVault(strategy.vault());
+    //     ISturdy sturdy = ISturdy(vault.default_queue(0));
+    //     address pair = sturdy.pair();
+    //     uint256 maxWithdrawAmount =
+    //         Math.min(strategy.availableWithdrawLimit(address(0)), ERC20(strategy.asset()).balanceOf(pair));
+    //     if (maxWithdrawAmount < 100) {
+    //         console.log("maxWithdrawAmount is too low, skipping", maxWithdrawAmount);
+    //         return; // skip dust
+    //     }
+    //     strategy.emergencyWithdraw(maxWithdrawAmount);
+
+    //     // verify that the strategy has recovered all assets
+    //     assertEq(strategy.totalAssets(), assets, "emergencyWithdraw lost funds");
+    //     uint256 strategyBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+    //     assertGt(strategyBalance, balanceOfAsset, "strategy balance not increased");
+
+    //     // study strategy has some rounding error because of converting assets to shares
+    //     uint256 roundingError = 10;
+    //     // verify strategy has recovered all assets or maximum possible
+    //     uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
+    //     uint256 currentValueOfVault = strategy.valueOfVault();
+
+    //     assertGe(currentBalance + roundingError, maxWithdrawAmount, "strategy didn't recover all asset");
+    //     assertLt(currentValueOfVault, valueOfVault, "all value stayed in the vault");
+    //     assertGt(currentBalance, balanceOfAsset, "strategy balance not increased");
+    //     assertApproxEqAbs(
+    //         currentBalance + currentValueOfVault, balanceOfAsset + valueOfVault, roundingError, "strategy lost value"
+    //     );
+    // }
 }
