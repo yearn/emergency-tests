@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 env:
   FOUNDRY_PROFILE: ci
@@ -32,9 +36,6 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-
-      - name: Install deps
-        run: forge install
 
       - name: Run tests
         run: forge test -vvv -j1
