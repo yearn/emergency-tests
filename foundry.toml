@@ -1,6 +1,9 @@
 [profile.default]
 evm_version = 'cancun'
 
+[profile.ci]
+evm_version = 'cancun'
+
 [rpc_endpoints]
 mainnet = "${ETH_RPC_URL}"
 optimism = "${OP_PRC_URL}"
