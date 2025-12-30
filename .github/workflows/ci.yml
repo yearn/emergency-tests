@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
 
 env:
   FOUNDRY_PROFILE: ci
@@ -18,17 +22,20 @@ env:
 
 jobs:
   run-ci:
+    name: Run tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+          submodules: recursive
 
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
         with:
           version: nightly
-
-      - name: Install deps
-        run: forge install
 
       - name: Run tests
         run: forge test -vvv -j1
