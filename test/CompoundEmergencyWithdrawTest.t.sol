@@ -12,7 +12,6 @@ interface ICompStrategy is ITokenizedStrategy {
 }
 
 contract CompoundEmergencyWithdrawTest is RolesVerification {
-    // NOTE: compound is paused on mainnet
     function test_mainnet_compound() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
