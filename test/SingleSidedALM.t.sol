@@ -65,6 +65,17 @@ contract SingleSidedALMTest is RolesVerification {
         verifyEmergencyExit(wbtcLbtc);
     }
 
+    function test_katana_weth_wsteth() public {
+        uint256 katanaFork = vm.createFork("katana");
+        vm.selectFork(katanaFork);
+
+        address wethWsteth = 0x2Fc3618d0d2C6663Df21339b566A8dEF0ee53D10;
+        vm.label(wethWsteth, "wethWsteth");
+
+        console.log("wethWsteth", wethWsteth);
+        verifyEmergencyExit(wethWsteth);
+    }
+
     function verifyEmergencyExit(address strategyAddress) internal {
         ISingleSidedALM strategy = ISingleSidedALM(strategyAddress);
         // verify that the strategy has assets

@@ -13,7 +13,8 @@ contract PendleEmergencyWithdrawTest is Test {
     uint256 private constant MAX_LOSS_BPS = 100; // 1%
     uint256 private constant BPS = 10_000;
 
-    // NOTE: no active strategies
+    // NOTE: an active strategy (> $100k) currently reverts in emergencyWithdraw
+    // with custom error 0xf84318bf, so Pendle remains intentionally disabled.
 
     function verifyAllQueuedStrategies(IVault vault) internal {
         address[] memory queues = vault.get_default_queue();

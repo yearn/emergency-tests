@@ -22,6 +22,11 @@ contract BoldEmergencyWithdrawTest is RolesVerification {
         for (uint256 i = 0; i < strategies.length; i++) {
             verifyEmergencyExit(strategies[i]);
         }
+
+        // This strategy is not always in the default queue, but currently has >$100k TVL.
+        address usdafYsyBold = 0xb4cA3c9831b9f87b69f6c41D9619f09AcCb43428;
+        vm.label(usdafYsyBold, "usdafYsyBold");
+        verifyEmergencyExit(usdafYsyBold);
     }
 
     function getStrategyFromStakedStrategy(ITokenizedStrategy strategy) internal returns (address[] memory) {
