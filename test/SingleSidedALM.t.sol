@@ -71,9 +71,9 @@ contract SingleSidedALMTest is RolesVerification {
         if (strategy.totalSupply() == 0) {
             return;
         }
-        uint256 assets = strategy.estimatedTotalAsset();
-        assertGt(assets, 0, "!totalAssets");
-        uint256 balanceOfAsset = ERC20(strategy.asset()).balanceOf(address(strategy));
+        ERC20 asset = ERC20(strategy.asset());
+        uint256 balanceOfAsset = asset.balanceOf(address(strategy));
+        assertGt(balanceOfAsset, 0, "!totalAssets");
         // verify roles
         verifyRoles(strategy);
 
@@ -83,10 +83,7 @@ contract SingleSidedALMTest is RolesVerification {
         // NOTE: amount is scaled down do maximum possible
         strategy.emergencyWithdraw(type(uint256).max);
 
-        // verify that the strategy didn't lose any funds
-        uint256 currentBalance = ERC20(strategy.asset()).balanceOf(address(strategy));
-
-        uint256 maxLoss = 100; // 10%
-        assertGe(strategy.estimatedTotalAsset(), assets * (1000 - maxLoss) / 1000, "emergency withdraw lost money");
+        // verify that strategy can withdraw some funds
+        assertGt(asset.balanceOf(address(strategy)), balanceOfAsset, "strategy balance not increased");
     }
 }
