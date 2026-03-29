@@ -74,6 +74,8 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         vm.label(morphoWethGauntletPrime, "morphoWethGauntletPrime");
         address morphoYearnOevUsdc = 0x888239Ffa9a0613F9142C808aA9F7d1948a14f75;
         vm.label(morphoYearnOevUsdc, "morphoYearnOevUsdc");
+        address morphoYearnOgUsdc = 0x0e297dE4005883C757c9F09fdF7cF1363C20e626;
+        vm.label(morphoYearnOgUsdc, "morphoYearnOgUsdc");
 
         console.log("morphoYearnOgWeth", morphoYearnOgWeth);
         verifyEmergencyExit(morphoYearnOgWeth);
@@ -93,6 +95,8 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(morphoWethGauntletPrime);
         console.log("morphoYearnOevUsdc", morphoYearnOevUsdc);
         verifyEmergencyExit(morphoYearnOevUsdc);
+        console.log("morphoYearnOgUsdc", morphoYearnOgUsdc);
+        verifyEmergencyExit(morphoYearnOgUsdc);
 
         // NOTE: not used anymore
         // address morphoUsdcGauntletCore = 0x4A77913d07b4154600A1E37234336f8273409c96;
@@ -158,6 +162,10 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         vm.label(ausdGauntlet, "ausdGauntlet");
         address ausdStakehouse = 0xC1Ec6d26902949Bf6cbb0c9859dbEAD1E87FB243;
         vm.label(ausdStakehouse, "ausdStakehouse");
+        address wbtcYearnOG = 0xC1B365011dd4a8Db71Eb7C5Aa016ee4E456D15C5;
+        vm.label(wbtcYearnOG, "wbtcYearnOG");
+        address usdcSteakhouseHighYield = 0xb542F002F4Fc811eFFE6465205872Cc0FB5Ae24c;
+        vm.label(usdcSteakhouseHighYield, "usdcSteakhouseHighYield");
 
         console.log("usdcStakehousePrime", usdcStakehousePrime);
         verifyEmergencyExit(usdcStakehousePrime);
@@ -179,6 +187,10 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(ausdGauntlet);
         console.log("ausdStakehouse", ausdStakehouse);
         verifyEmergencyExit(ausdStakehouse);
+        console.log("wbtcYearnOG", wbtcYearnOG);
+        verifyEmergencyExit(wbtcYearnOG);
+        console.log("usdcSteakhouseHighYield", usdcSteakhouseHighYield);
+        verifyEmergencyExit(usdcSteakhouseHighYield);
     }
 
     function test_compound_blue_polygon() public {
@@ -255,6 +267,18 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
         verifyEmergencyExit(fluidUsdt);
     }
 
+    function test_bankr_polygon() public {
+        uint256 polygonFork = vm.createFork("polygon");
+        vm.selectFork(polygonFork);
+        console.log("Current block number on polygon:", block.number);
+
+        address bankrUsdc = 0x5BFd56F9BcBDb2be985C64C620ECa7F02Fa7b439;
+        vm.label(bankrUsdc, "bankrUsdc");
+
+        console.log("bankrUsdc", bankrUsdc);
+        verifyEmergencyExit(bankrUsdc);
+    }
+
     function test_llama_lend_mainnet() public {
         uint256 mainnetFork = vm.createFork("mainnet");
         vm.selectFork(mainnetFork);
@@ -262,8 +286,12 @@ contract Base4626EmergencyWithdrawTest is RolesVerification {
 
         address crvUsdsreUsdLender = 0x09AcE8B2f2fE2189A5B37046BBaFa29Dce31c920;
         vm.label(crvUsdsreUsdLender, "crvUsdsreUsdLender");
+        address crvUsdsFxsaveLender = 0x5103D3Ee6d599984609DAaAdD3a439152cc0C392;
+        vm.label(crvUsdsFxsaveLender, "crvUsdsFxsaveLender");
         console.log("crvUsdsreUsdLender", crvUsdsreUsdLender);
         verifyEmergencyExit(crvUsdsreUsdLender);
+        console.log("crvUsdsFxsaveLender", crvUsdsFxsaveLender);
+        verifyEmergencyExit(crvUsdsFxsaveLender);
     }
 
     function verifyGearboxEmergencyExit(address strategyAddress) internal {

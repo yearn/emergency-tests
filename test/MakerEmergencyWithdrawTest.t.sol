@@ -37,6 +37,16 @@ contract MakerEmergencyWithdrawTest is RolesVerification {
         vm.label(sparkUsds, "sparkUsdsCompounder");
         console.log("sparkUsdsCompounder", sparkUsds);
         verifyEmergencyExit(sparkUsds);
+
+        address daiToYearnTermUsdsDepositor = 0x6164217CAa4Ff58fb722D726391875aC0C5Fb541;
+        vm.label(daiToYearnTermUsdsDepositor, "daiToYearnTermUsdsDepositor");
+        console.log("daiToYearnTermUsdsDepositor", daiToYearnTermUsdsDepositor);
+        verifyEmergencyExit(daiToYearnTermUsdsDepositor);
+
+        address daiToUsdc1Depositor = 0xfF03Dce6d95aa7a30B75EFbaFD11384221B9f9B5;
+        vm.label(daiToUsdc1Depositor, "daiToUsdc1Depositor");
+        console.log("daiToUsdc1Depositor", daiToUsdc1Depositor);
+        verifyEmergencyExit(daiToUsdc1Depositor);
     }
 
     function verifyEmergencyExit(address strategyAddress) internal {
